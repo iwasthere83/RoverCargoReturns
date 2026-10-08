@@ -986,4 +986,8 @@ Check((string)about.Element("Author") == "BillBrasky" && (string)about.Element("
 Check(!((string)about.Element("Description")).Contains("extract", StringComparison.OrdinalIgnoreCase)
       && !File.ReadAllText(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "README.md"))).Contains("extract_rover_cargo"),
       "about and README: no extraction steps");
+// the Workshop item (published 2026-10-08): the game reads About.xml with XmlArray("Tags")/XmlArrayItem("Tag") and
+// updates the item named by WorkshopHandle; without it the next Publish would create a second item
+Check(about.Element("Tags")?.Elements("Tag").Count() >= 1 && !about.Element("Tags").Elements("string").Any(), "about: tags as <Tag> (the game's format)");
+Check((string)about.Element("WorkshopHandle") == "3816061059", "about: the Workshop item's handle, so Publish updates it");
 Console.WriteLine($"HabTests: {checks} checks passed");
