@@ -1,0 +1,1363 @@
+{
+ "version": 2,
+ "body": {
+  "mesh": "HabBody",
+  "materials": [
+   "ColorWhite",
+   "ColorRed",
+   "ColorGray",
+   "ColorWhite",
+   "ColorWhite",
+   "ColorWhite",
+   "ColorWhite",
+   "ColorWhite",
+   "ColorWhite",
+   "ColorWhite",
+   "ColorWhite",
+   "ColorWhite",
+   "ColorWhite"
+  ]
+ },
+ "wheels": [
+  {
+   "name": "WheelFrontTireL",
+   "pos": [
+    -1.4574,
+    0.6446,
+    1.7
+   ],
+   "tyre": "TyreL",
+   "arm": "ArmL",
+   "armPivot": [
+    -0.53,
+    0.904,
+    2.15
+   ]
+  },
+  {
+   "name": "WheelFrontTireR",
+   "pos": [
+    1.4574,
+    0.6446,
+    1.7
+   ],
+   "tyre": "TyreR",
+   "arm": "ArmR",
+   "armPivot": [
+    0.53,
+    0.904,
+    2.15
+   ]
+  },
+  {
+   "name": "WheelMidTireL",
+   "pos": [
+    -1.4574,
+    0.6446,
+    0.0
+   ],
+   "tyre": "TyreL",
+   "arm": "ArmL",
+   "armPivot": [
+    -0.53,
+    0.904,
+    0.45
+   ]
+  },
+  {
+   "name": "WheelMidTireR",
+   "pos": [
+    1.4574,
+    0.6446,
+    0.0
+   ],
+   "tyre": "TyreR",
+   "arm": "ArmR",
+   "armPivot": [
+    0.53,
+    0.904,
+    0.45
+   ]
+  },
+  {
+   "name": "WheelRearTireL",
+   "pos": [
+    -1.4574,
+    0.6446,
+    -1.7
+   ],
+   "tyre": "TyreL",
+   "arm": "ArmL",
+   "armPivot": [
+    -0.53,
+    0.904,
+    -1.25
+   ]
+  },
+  {
+   "name": "WheelRearTireR",
+   "pos": [
+    1.4574,
+    0.6446,
+    -1.7
+   ],
+   "tyre": "TyreR",
+   "arm": "ArmR",
+   "armPivot": [
+    0.53,
+    0.904,
+    -1.25
+   ]
+  }
+ ],
+ "shocks": [
+  {
+   "wheel": "WheelFrontTireL",
+   "top": [
+    -0.6397,
+    1.24,
+    2.069
+   ],
+   "bottom": [
+    -0.6397,
+    0.9537,
+    2.069
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  },
+  {
+   "wheel": "WheelFrontTireR",
+   "top": [
+    0.6397,
+    1.24,
+    2.069
+   ],
+   "bottom": [
+    0.6397,
+    0.9537,
+    2.069
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  },
+  {
+   "wheel": "WheelMidTireL",
+   "top": [
+    -0.6397,
+    1.24,
+    0.369
+   ],
+   "bottom": [
+    -0.6397,
+    0.9537,
+    0.369
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  },
+  {
+   "wheel": "WheelMidTireR",
+   "top": [
+    0.6397,
+    1.24,
+    0.369
+   ],
+   "bottom": [
+    0.6397,
+    0.9537,
+    0.369
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  },
+  {
+   "wheel": "WheelRearTireL",
+   "top": [
+    -0.6397,
+    1.24,
+    -1.331
+   ],
+   "bottom": [
+    -0.6397,
+    0.9537,
+    -1.331
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  },
+  {
+   "wheel": "WheelRearTireR",
+   "top": [
+    0.6397,
+    1.24,
+    -1.331
+   ],
+   "bottom": [
+    0.6397,
+    0.9537,
+    -1.331
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  }
+ ],
+ "colliders": [
+  {
+   "center": [
+    0,
+    1.26,
+    0
+   ],
+   "size": [
+    2.16,
+    0.12,
+    5.3
+   ]
+  },
+  {
+   "center": [
+    0,
+    0.88,
+    0
+   ],
+   "size": [
+    1.06,
+    0.64,
+    5.2
+   ]
+  },
+  {
+   "center": [
+    0,
+    1.385,
+    0
+   ],
+   "size": [
+    2.12,
+    0.13,
+    6.4
+   ]
+  },
+  {
+   "center": [
+    0,
+    3.55,
+    0
+   ],
+   "size": [
+    2.3,
+    0.2,
+    6.4
+   ]
+  },
+  {
+   "center": [
+    0,
+    2.45,
+    3.1
+   ],
+   "size": [
+    2.0,
+    2.0,
+    0.2
+   ]
+  },
+  {
+   "center": [
+    0,
+    3.3275,
+    -3.1
+   ],
+   "size": [
+    2.0,
+    0.245,
+    0.2
+   ]
+  },
+  {
+   "center": [
+    0,
+    1.29,
+    3.625
+   ],
+   "size": [
+    1.9,
+    0.06,
+    0.85
+   ]
+  },
+  {
+   "center": [
+    0,
+    0.8,
+    3.415
+   ],
+   "size": [
+    0.14,
+    0.14,
+    2.05
+   ]
+  },
+  {
+   "center": [
+    0,
+    1.03,
+    1.06
+   ],
+   "size": [
+    2.16,
+    0.34,
+    0.32
+   ]
+  },
+  {
+   "center": [
+    0,
+    1.03,
+    -0.64
+   ],
+   "size": [
+    2.16,
+    0.34,
+    0.36
+   ]
+  },
+  {
+   "center": [
+    0,
+    1.03,
+    -2.385
+   ],
+   "size": [
+    2.16,
+    0.34,
+    0.37
+   ]
+  },
+  {
+   "center": [
+    1.05,
+    1.585,
+    0
+   ],
+   "size": [
+    0.1,
+    0.27,
+    6.4
+   ]
+  },
+  {
+   "center": [
+    -1.05,
+    1.585,
+    0
+   ],
+   "size": [
+    0.1,
+    0.27,
+    6.4
+   ]
+  },
+  {
+   "center": [
+    1.075,
+    2.585,
+    0
+   ],
+   "size": [
+    0.15,
+    1.73,
+    6.4
+   ]
+  },
+  {
+   "center": [
+    -1.075,
+    2.585,
+    -1.7
+   ],
+   "size": [
+    0.15,
+    1.73,
+    3.0
+   ]
+  },
+  {
+   "center": [
+    -1.075,
+    2.585,
+    2.7
+   ],
+   "size": [
+    0.15,
+    1.73,
+    1.0
+   ]
+  },
+  {
+   "center": [
+    -1.075,
+    3.375,
+    1.0
+   ],
+   "size": [
+    0.15,
+    0.15,
+    2.4
+   ]
+  },
+  {
+   "name": "DeployPanel",
+   "center": [
+    -1.16,
+    2.0,
+    2.6
+   ],
+   "size": [
+    0.02,
+    0.3,
+    0.3
+   ]
+  }
+ ],
+ "parts": [
+  {
+   "name": "SlideOut",
+   "mesh": "HabSlideOut",
+   "materials": [
+    "ColorWhite",
+    "ColorWhite",
+    "ColorWhite",
+    "ColorWhite",
+    "ColorWhite",
+    "ColorWhite"
+   ],
+   "pos": [
+    -1.15,
+    1.72,
+    -0.2
+   ],
+   "colliders": [
+    {
+     "center": [
+      -0.02,
+      0.79,
+      1.2
+     ],
+     "size": [
+      0.04,
+      1.58,
+      2.4
+     ]
+    },
+    {
+     "center": [
+      0.355,
+      -0.02,
+      1.2
+     ],
+     "size": [
+      0.79,
+      0.04,
+      2.4
+     ]
+    },
+    {
+     "center": [
+      0.355,
+      1.6,
+      1.2
+     ],
+     "size": [
+      0.79,
+      0.04,
+      2.4
+     ]
+    },
+    {
+     "center": [
+      0.355,
+      0.79,
+      0.02
+     ],
+     "size": [
+      0.79,
+      1.58,
+      0.04
+     ]
+    },
+    {
+     "center": [
+      0.355,
+      0.79,
+      2.38
+     ],
+     "size": [
+      0.79,
+      1.58,
+      0.04
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Ladder",
+   "mesh": "HabLadder",
+   "materials": [
+    "ColorWhite",
+    "ColorWhite",
+    "ColorWhite"
+   ],
+   "pos": [
+    0.0,
+    1.42,
+    -3.4
+   ],
+   "colliders": [
+    {
+     "name": "Stairs",
+     "center": [
+      0.0,
+      -0.5357,
+      -0.6876
+     ],
+     "size": [
+      0.9,
+      0.04,
+      1.7804
+     ],
+     "rot": [
+      -38.157,
+      0.0,
+      0.0
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Leg0",
+   "mesh": "HabLeg",
+   "materials": [
+    "ColorWhite",
+    "ColorWhite"
+   ],
+   "pos": [
+    0.9,
+    0.35,
+    2.55
+   ],
+   "colliders": []
+  },
+  {
+   "name": "Leg1",
+   "mesh": "HabLeg",
+   "materials": [
+    "ColorWhite",
+    "ColorWhite"
+   ],
+   "pos": [
+    -0.9,
+    0.35,
+    2.55
+   ],
+   "colliders": []
+  },
+  {
+   "name": "Leg2",
+   "mesh": "HabLeg",
+   "materials": [
+    "ColorWhite",
+    "ColorWhite"
+   ],
+   "pos": [
+    0.9,
+    0.35,
+    -2.55
+   ],
+   "colliders": []
+  },
+  {
+   "name": "Leg3",
+   "mesh": "HabLeg",
+   "materials": [
+    "ColorWhite",
+    "ColorWhite"
+   ],
+   "pos": [
+    -0.9,
+    0.35,
+    -2.55
+   ],
+   "colliders": []
+  }
+ ],
+ "upgrades": {
+  "hab": [
+   {
+    "group": "Armour",
+    "name": "UpgArmourHab",
+    "mesh": "UpgArmourHab",
+    "materials": [
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       -1.0853,
+       1.41,
+       -2.315
+      ],
+      "size": [
+       0.0418,
+       0.1,
+       1.07
+      ]
+     },
+     {
+      "center": [
+       -1.0853,
+       1.41,
+       -0.85
+      ],
+      "size": [
+       0.0418,
+       0.1,
+       1.54
+      ]
+     },
+     {
+      "center": [
+       -1.0853,
+       1.41,
+       0.85
+      ],
+      "size": [
+       0.0418,
+       0.1,
+       1.54
+      ]
+     },
+     {
+      "center": [
+       -1.0853,
+       1.41,
+       2.315
+      ],
+      "size": [
+       0.0418,
+       0.1,
+       1.07
+      ]
+     },
+     {
+      "center": [
+       1.0853,
+       1.41,
+       -2.315
+      ],
+      "size": [
+       0.0418,
+       0.1,
+       1.07
+      ]
+     },
+     {
+      "center": [
+       1.0853,
+       1.41,
+       -0.85
+      ],
+      "size": [
+       0.0418,
+       0.1,
+       1.54
+      ]
+     },
+     {
+      "center": [
+       1.0853,
+       1.41,
+       0.85
+      ],
+      "size": [
+       0.0418,
+       0.1,
+       1.54
+      ]
+     },
+     {
+      "center": [
+       1.0853,
+       1.41,
+       2.315
+      ],
+      "size": [
+       0.0418,
+       0.1,
+       1.07
+      ]
+     }
+    ]
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderL0",
+    "mesh": "UpgFenderHabL",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       -0.0426,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.68,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       -0.3586,
+       0.0,
+       0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       -0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     -1.4574,
+     0.6446,
+     1.7
+    ],
+    "follow": true
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderL1",
+    "mesh": "UpgFenderHabL",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       -0.0426,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.68,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       -0.3586,
+       0.0,
+       0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       -0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     -1.4574,
+     0.6446,
+     0.0
+    ],
+    "follow": true
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderL2",
+    "mesh": "UpgFenderHabL",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       -0.0426,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.68,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       -0.3586,
+       0.0,
+       0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       -0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     -1.4574,
+     0.6446,
+     -1.7
+    ],
+    "follow": true
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderR0",
+    "mesh": "UpgFenderHabR",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       0.0426,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.68,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       0.3586,
+       0.0,
+       0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     1.4574,
+     0.6446,
+     1.7
+    ],
+    "follow": true
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderR1",
+    "mesh": "UpgFenderHabR",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       0.0426,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.68,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       0.3586,
+       0.0,
+       0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     1.4574,
+     0.6446,
+     0.0
+    ],
+    "follow": true
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderR2",
+    "mesh": "UpgFenderHabR",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       0.0426,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.68,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       0.3586,
+       0.0,
+       0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     1.4574,
+     0.6446,
+     -1.7
+    ],
+    "follow": true
+   }
+  ]
+ },
+ "frame": {
+  "thumbnail": "ItemKitTrailerHab",
+  "states": [
+   {
+    "mesh": "HabStage0",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "entry": [
+     "@kit",
+     1
+    ],
+    "entry2": null,
+    "exit": [
+     "ItemDrill",
+     1
+    ]
+   },
+   {
+    "mesh": "HabStage1",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "entry": [
+     "ItemWeldingTorch",
+     0
+    ],
+    "entry2": [
+     "ItemSteelSheets",
+     20
+    ],
+    "exit": [
+     "ItemAngleGrinder",
+     5
+    ]
+   },
+   {
+    "mesh": "HabStage2",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "entry": [
+     "ItemWrench",
+     0
+    ],
+    "entry2": [
+     "ItemPlasticSheets",
+     20
+    ],
+    "exit": [
+     "ItemCrowbar",
+     5
+    ]
+   },
+   {
+    "mesh": "HabBody",
+    "materials": [
+     "ColorWhite",
+     "ColorRed",
+     "ColorGray",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "entry": [
+     "ItemWrench",
+     0
+    ],
+    "entry2": [
+     "ItemElectronicParts",
+     8
+    ],
+    "exit": [
+     "ItemCrowbar",
+     5
+    ]
+   }
+  ]
+ },
+ "deploy": {
+  "slideTravel": [
+   -0.65,
+   0.0,
+   0.0
+  ],
+  "ladderStowEuler": [
+   130.0,
+   0.0,
+   0.0
+  ],
+  "legs": [
+   "Leg0",
+   "Leg1",
+   "Leg2",
+   "Leg3"
+  ],
+  "legStowH": 0.35,
+  "legMaxStroke": 0.8,
+  "panel": "DeployPanel"
+ },
+ "autoCom": 1.99,
+ "roverMass": 80.0,
+ "bays": [],
+ "hitch": [
+  0.0,
+  0.8,
+  4.45
+ ],
+ "roverHitch": [
+  0.0,
+  0.8,
+  -2.7
+ ],
+ "tailLights": [
+  [
+   -0.83,
+   1.05,
+   -3.36
+  ],
+  [
+   0.83,
+   1.05,
+   -3.36
+  ]
+ ],
+ "cabinVolume": 26800.0,
+ "surfaceArea": 100.0,
+ "door": {
+  "prefab": "StructureCompositeDoor",
+  "pos": [
+   0.0,
+   2.205,
+   -3.05
+  ],
+  "leafTravel": 0.44,
+  "trigger": {
+   "center": [
+    0.0,
+    2.305,
+    -3.05
+   ],
+   "size": [
+    1.37,
+    1.71,
+    0.7
+   ]
+  }
+ },
+ "slots": [
+  {
+   "name": "AirSupplyMount",
+   "type": "Container",
+   "pos": [
+    -0.46,
+    1.32,
+    3.62
+   ]
+  },
+  {
+   "name": "AirSupply",
+   "type": "Tank",
+   "pos": [
+    -0.46,
+    1.893,
+    3.62
+   ]
+  },
+  {
+   "name": "WasteMount",
+   "type": "Container",
+   "pos": [
+    0.46,
+    1.32,
+    3.62
+   ]
+  },
+  {
+   "name": "Waste",
+   "type": "Tank",
+   "pos": [
+    0.46,
+    1.893,
+    3.62
+   ]
+  },
+  {
+   "name": "Filter1",
+   "type": "GasFilter",
+   "pos": [
+    0.93,
+    3.0,
+    -2.52
+   ],
+   "trigger": {
+    "center": [
+     0.93,
+     3.0,
+     -2.52
+    ],
+    "size": [
+     0.12,
+     0.25,
+     0.18
+    ]
+   }
+  },
+  {
+   "name": "Filter2",
+   "type": "GasFilter",
+   "pos": [
+    0.93,
+    3.0,
+    -2.34
+   ],
+   "trigger": {
+    "center": [
+     0.93,
+     3.0,
+     -2.34
+    ],
+    "size": [
+     0.12,
+     0.25,
+     0.18
+    ]
+   }
+  },
+  {
+   "name": "Battery1",
+   "type": "Battery",
+   "pos": [
+    0.93,
+    3.0,
+    -2.16
+   ],
+   "trigger": {
+    "center": [
+     0.93,
+     3.0,
+     -2.16
+    ],
+    "size": [
+     0.12,
+     0.25,
+     0.18
+    ]
+   }
+  },
+  {
+   "name": "Battery2",
+   "type": "Battery",
+   "pos": [
+    0.93,
+    3.0,
+    -1.98
+   ],
+   "trigger": {
+    "center": [
+     0.93,
+     3.0,
+     -1.98
+    ],
+    "size": [
+     0.12,
+     0.25,
+     0.18
+    ]
+   }
+  }
+ ],
+ "cradles": [
+  {
+   "label": "AIR SUPPLY",
+   "container": "AirSupplyMount",
+   "tank": "AirSupply"
+  },
+  {
+   "label": "WASTE",
+   "container": "WasteMount",
+   "tank": "Waste"
+  }
+ ],
+ "mass": 90.0
+}

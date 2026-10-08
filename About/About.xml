@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetadata>
+ <Name>Rover (Cargo) Returns</Name>
+ <ModID>stationeers.rovercargo</ModID>
+ <Author>BillBrasky</Author>
+ <Version>0.2.0</Version>
+ <Description>Brings back a pressurised 6-wheel Cargo Rover for today's Stationeers — an original model, inspired by the Cargo Rover the game once had — with two trailers to tow behind it: a cargo trailer with six bays for crates or portable tanks, and a walk-in habitat trailer with its own air, water, power and a deployable living space.
+
+The rover: a sealed cab with working air (O2 supply, filtration into the waste tank, climate control), a touch dashboard, covered side bays, gas, filter and battery slots, headlights and work lights, and optional storm armour, fairings and thrusters. Print the kits on the Electronics Printer (Tier Two), place the frame and build it up in stages; take it apart again with a drill. A spray can paints the body. Also adds a chase camera for all rovers.
+
+This mod ships no game assets. Everyone in a multiplayer game needs it. Settings in RoverCargo.cfg.</Description>
+ <Tags>
+  <string>Vehicles</string>
+  <string>Rover</string>
+  <string>Trailer</string>
+ </Tags>
+</ModMetadata>

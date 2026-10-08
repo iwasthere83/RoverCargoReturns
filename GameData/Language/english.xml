@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Language xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>English</Name>
+  <Code>EN</Code>
+  <Font>font_english</Font>
+  <Things>
+    <RecordThing>
+      <Key>TrailerCargo</Key>
+      <Value>Trailer (Cargo)</Value>
+      <Description>A three-axle trailer for the Rover (Cargo). Wrench its drawbar near the rover's rear hitch to couple it. The deck has six bays, each carrying one crate or two portable tanks.</Description>
+    </RecordThing>
+    <RecordThing>
+      <Key>TrailerHab</Key>
+      <Value>Trailer (Habitat)</Value>
+      <Description>A three-axle habitat trailer for the Rover (Cargo): a walk-in field base. Wrench its drawbar near the rover's rear hitch to couple it.</Description>
+    </RecordThing>
+    <RecordThing>
+      <Key>ItemKitTrailerCargo</Key>
+      <Value>Kit (Trailer Cargo)</Value>
+      <Description>Place it to start a Trailer (Cargo) frame. Build the frame up with a welder and 10 steel sheets, then a wrench and 10 plastic sheets.</Description>
+    </RecordThing>
+    <RecordThing>
+      <Key>StructureTrailerCargo</Key>
+      <Value>Trailer (Cargo) Frame</Value>
+      <Description>A Trailer (Cargo) being built. Welder and 10 steel sheets for the deck and pods, then a wrench and 10 plastic sheets to finish it.</Description>
+    </RecordThing>
+    <RecordThing>
+      <Key>ItemKitTrailerHab</Key>
+      <Value>Kit (Trailer Habitat)</Value>
+      <Description>Place it to start a Trailer (Habitat) frame. Build it up with a welder and 20 steel sheets, a wrench and 20 plastic sheets, then a wrench and 8 electronic parts.</Description>
+    </RecordThing>
+    <RecordThing>
+      <Key>StructureTrailerHab</Key>
+      <Value>Trailer (Habitat) Frame</Value>
+      <Description>A Trailer (Habitat) being built. Welder and 20 steel sheets for the floor and wall frame, a wrench and 20 plastic sheets for the shell, a wrench and 8 electronic parts to finish it.</Description>
+    </RecordThing>
+    <RecordThing>
+      <Key>ItemKitRoverFrame</Key>
+      <Value>Kit (Rover Cargo)</Value>
+      <Description>Place it to start a Rover (Cargo) frame. Build it up with a welder and 10 steel sheets, then 10 plastic sheets in one hand and 4 electronic parts in the other.</Description>
+    </RecordThing>
+    <RecordThing>
+      <Key>StructureRover</Key>
+      <Value>Rover (Cargo) Frame</Value>
+      <Description>A Rover (Cargo) being built. Welder and 10 steel sheets for the hull, then 10 plastic sheets and 4 electronic parts to finish it.</Description>
+    </RecordThing>
+  </Things>
+</Language>

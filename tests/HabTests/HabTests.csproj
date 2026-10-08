@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ModDir Condition="Exists('..\..\mods\Stationeers.RoverCargo')">..\..\mods\Stationeers.RoverCargo</ModDir>
+    <ModDir Condition="'$(ModDir)' == ''">..\..</ModDir>
+  </PropertyGroup>
+  <PropertyGroup><TargetFramework>net9.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <ItemGroup><Compile Include="$(ModDir)\HabRules.cs" Link="HabRules.cs" /><Compile Include="$(ModDir)\StormRules.cs" Link="StormRules.cs" /><Compile Include="$(ModDir)\RoverRules.cs" Link="RoverRules.cs" /><Compile Include="$(ModDir)\RoverJson.cs" Link="RoverJson.cs" /><Compile Include="$(ModDir)\RoverDashboard.cs" Link="RoverDashboard.cs" /><Compile Include="$(ModDir)\FrameData.cs" Link="FrameData.cs" /></ItemGroup>
+  <ItemGroup><Reference Include="Newtonsoft.Json"><HintPath>C:\Program Files (x86)\Steam\steamapps\common\Stationeers\rocketstation_Data\Managed\Newtonsoft.Json.dll</HintPath></Reference></ItemGroup>
+</Project>

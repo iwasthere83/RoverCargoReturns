@@ -1,0 +1,993 @@
+{
+ "version": 2,
+ "body": {
+  "mesh": "TrailerBody",
+  "materials": [
+   "ColorRed",
+   "ColorWhite",
+   "ColorWhite",
+   "ColorWhite",
+   "ColorWhite"
+  ]
+ },
+ "upgrades": {
+  "trailer": [
+   {
+    "group": "Armour",
+    "name": "UpgArmourTrailer",
+    "mesh": "UpgArmourTrailer",
+    "materials": [
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       0.0,
+       1.04,
+       -2.658
+      ],
+      "size": [
+       1.84,
+       0.4,
+       0.028
+      ]
+     },
+     {
+      "center": [
+       0.0,
+       0.94,
+       -2.676
+      ],
+      "size": [
+       1.76,
+       0.02,
+       0.02
+      ]
+     },
+     {
+      "center": [
+       0.0,
+       1.04,
+       -2.676
+      ],
+      "size": [
+       1.76,
+       0.02,
+       0.02
+      ]
+     },
+     {
+      "center": [
+       0.0,
+       1.14,
+       -2.676
+      ],
+      "size": [
+       1.76,
+       0.02,
+       0.02
+      ]
+     },
+     {
+      "center": [
+       -0.952,
+       1.2275,
+       -2.488
+      ],
+      "size": [
+       0.304,
+       0.215,
+       0.376
+      ]
+     },
+     {
+      "center": [
+       -0.952,
+       1.2275,
+       2.488
+      ],
+      "size": [
+       0.304,
+       0.215,
+       0.376
+      ]
+     },
+     {
+      "center": [
+       0.952,
+       1.2275,
+       -2.488
+      ],
+      "size": [
+       0.304,
+       0.215,
+       0.376
+      ]
+     },
+     {
+      "center": [
+       0.952,
+       1.2275,
+       2.488
+      ],
+      "size": [
+       0.304,
+       0.215,
+       0.376
+      ]
+     }
+    ]
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderL0",
+    "mesh": "UpgFenderTrailerL",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       -0.0126,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.74,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       -0.3586,
+       0.0,
+       -0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       -0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     -1.4574,
+     0.6446,
+     1.7
+    ],
+    "follow": true
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderL1",
+    "mesh": "UpgFenderTrailerL",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       -0.0126,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.74,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       -0.3586,
+       0.0,
+       -0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       -0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     -1.4574,
+     0.6446,
+     0.0
+    ],
+    "follow": true
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderL2",
+    "mesh": "UpgFenderTrailerL",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       -0.0126,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.74,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       -0.3586,
+       0.0,
+       -0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       -0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     -1.4574,
+     0.6446,
+     -1.7
+    ],
+    "follow": true
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderR0",
+    "mesh": "UpgFenderTrailerR",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       0.0126,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.74,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       0.3586,
+       0.0,
+       -0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     1.4574,
+     0.6446,
+     1.7
+    ],
+    "follow": true
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderR1",
+    "mesh": "UpgFenderTrailerR",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       0.0126,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.74,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       0.3586,
+       0.0,
+       -0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     1.4574,
+     0.6446,
+     0.0
+    ],
+    "follow": true
+   },
+   {
+    "group": "Fairings",
+    "name": "FenderR2",
+    "mesh": "UpgFenderTrailerR",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "colliders": [
+     {
+      "center": [
+       0.0126,
+       0.7014,
+       -0.0
+      ],
+      "size": [
+       0.74,
+       0.4003,
+       1.4775
+      ]
+     },
+     {
+      "center": [
+       0.3586,
+       0.0,
+       -0.0
+      ],
+      "size": [
+       0.02,
+       0.11,
+       0.11
+      ]
+     },
+     {
+      "center": [
+       0.3576,
+       0.2826,
+       -0.0
+      ],
+      "size": [
+       0.022,
+       0.582,
+       1.3471
+      ]
+     }
+    ],
+    "pos": [
+     1.4574,
+     0.6446,
+     -1.7
+    ],
+    "follow": true
+   }
+  ]
+ },
+ "frame": {
+  "thumbnail": "ItemKitTrailerCargo",
+  "states": [
+   {
+    "mesh": "TrailerStage0",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "entry": [
+     "@kit",
+     1
+    ],
+    "entry2": null,
+    "exit": [
+     "ItemDrill",
+     1
+    ]
+   },
+   {
+    "mesh": "TrailerStage1",
+    "materials": [
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "entry": [
+     "ItemWeldingTorch",
+     0
+    ],
+    "entry2": [
+     "ItemSteelSheets",
+     10
+    ],
+    "exit": [
+     "ItemAngleGrinder",
+     5
+    ]
+   },
+   {
+    "mesh": "TrailerBody",
+    "materials": [
+     "ColorRed",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite",
+     "ColorWhite"
+    ],
+    "entry": [
+     "ItemWrench",
+     0
+    ],
+    "entry2": [
+     "ItemPlasticSheets",
+     10
+    ],
+    "exit": [
+     "ItemCrowbar",
+     5
+    ]
+   }
+  ]
+ },
+ "wheels": [
+  {
+   "name": "WheelFrontTireL",
+   "pos": [
+    -1.4574,
+    0.6446,
+    1.7
+   ],
+   "tyre": "TyreL",
+   "arm": "ArmL",
+   "armPivot": [
+    -0.53,
+    0.904,
+    2.15
+   ]
+  },
+  {
+   "name": "WheelFrontTireR",
+   "pos": [
+    1.4574,
+    0.6446,
+    1.7
+   ],
+   "tyre": "TyreR",
+   "arm": "ArmR",
+   "armPivot": [
+    0.53,
+    0.904,
+    2.15
+   ]
+  },
+  {
+   "name": "WheelMidTireL",
+   "pos": [
+    -1.4574,
+    0.6446,
+    0.0
+   ],
+   "tyre": "TyreL",
+   "arm": "ArmL",
+   "armPivot": [
+    -0.53,
+    0.904,
+    0.45
+   ]
+  },
+  {
+   "name": "WheelMidTireR",
+   "pos": [
+    1.4574,
+    0.6446,
+    0.0
+   ],
+   "tyre": "TyreR",
+   "arm": "ArmR",
+   "armPivot": [
+    0.53,
+    0.904,
+    0.45
+   ]
+  },
+  {
+   "name": "WheelRearTireL",
+   "pos": [
+    -1.4574,
+    0.6446,
+    -1.7
+   ],
+   "tyre": "TyreL",
+   "arm": "ArmL",
+   "armPivot": [
+    -0.53,
+    0.904,
+    -1.25
+   ]
+  },
+  {
+   "name": "WheelRearTireR",
+   "pos": [
+    1.4574,
+    0.6446,
+    -1.7
+   ],
+   "tyre": "TyreR",
+   "arm": "ArmR",
+   "armPivot": [
+    0.53,
+    0.904,
+    -1.25
+   ]
+  }
+ ],
+ "shocks": [
+  {
+   "wheel": "WheelFrontTireL",
+   "top": [
+    -0.6397,
+    1.24,
+    2.069
+   ],
+   "bottom": [
+    -0.6397,
+    0.9537,
+    2.069
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  },
+  {
+   "wheel": "WheelFrontTireR",
+   "top": [
+    0.6397,
+    1.24,
+    2.069
+   ],
+   "bottom": [
+    0.6397,
+    0.9537,
+    2.069
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  },
+  {
+   "wheel": "WheelMidTireL",
+   "top": [
+    -0.6397,
+    1.24,
+    0.369
+   ],
+   "bottom": [
+    -0.6397,
+    0.9537,
+    0.369
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  },
+  {
+   "wheel": "WheelMidTireR",
+   "top": [
+    0.6397,
+    1.24,
+    0.369
+   ],
+   "bottom": [
+    0.6397,
+    0.9537,
+    0.369
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  },
+  {
+   "wheel": "WheelRearTireL",
+   "top": [
+    -0.6397,
+    1.24,
+    -1.331
+   ],
+   "bottom": [
+    -0.6397,
+    0.9537,
+    -1.331
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  },
+  {
+   "wheel": "WheelRearTireR",
+   "top": [
+    0.6397,
+    1.24,
+    -1.331
+   ],
+   "bottom": [
+    0.6397,
+    0.9537,
+    -1.331
+   ],
+   "body": "ShockBody",
+   "rod": "ShockRod",
+   "spring": "ShockSpring",
+   "springAt": [
+    0.035,
+    0.055
+   ]
+  }
+ ],
+ "colliders": [
+  {
+   "center": [
+    0,
+    1.26,
+    0
+   ],
+   "size": [
+    2.16,
+    0.12,
+    5.3
+   ]
+  },
+  {
+   "center": [
+    0,
+    0.88,
+    0
+   ],
+   "size": [
+    1.06,
+    0.64,
+    5.2
+   ]
+  },
+  {
+   "center": [
+    0,
+    1.03,
+    1.06
+   ],
+   "size": [
+    2.16,
+    0.34,
+    0.32
+   ]
+  },
+  {
+   "center": [
+    0,
+    1.03,
+    -0.64
+   ],
+   "size": [
+    2.16,
+    0.34,
+    0.36
+   ]
+  },
+  {
+   "center": [
+    0,
+    1.03,
+    -2.385
+   ],
+   "size": [
+    2.16,
+    0.34,
+    0.37
+   ]
+  },
+  {
+   "center": [
+    1.03,
+    1.46,
+    0
+   ],
+   "size": [
+    0.06,
+    0.28,
+    5.3
+   ]
+  },
+  {
+   "center": [
+    -1.03,
+    1.46,
+    0
+   ],
+   "size": [
+    0.06,
+    0.28,
+    5.3
+   ]
+  },
+  {
+   "center": [
+    0,
+    1.46,
+    2.6
+   ],
+   "size": [
+    2.0,
+    0.28,
+    0.06
+   ]
+  },
+  {
+   "center": [
+    0,
+    1.46,
+    -2.6
+   ],
+   "size": [
+    2.0,
+    0.28,
+    0.06
+   ]
+  },
+  {
+   "center": [
+    0,
+    0.8,
+    3.14
+   ],
+   "size": [
+    0.14,
+    0.14,
+    1.5
+   ]
+  }
+ ],
+ "autoCom": 1.0108,
+ "roverMass": 80.0,
+ "bays": [
+  {
+   "crate": [
+    0.0,
+    1.32,
+    2.125
+   ],
+   "tanks": [
+    [
+     -0.46,
+     1.893,
+     2.125
+    ],
+    [
+     0.46,
+     1.893,
+     2.125
+    ]
+   ]
+  },
+  {
+   "crate": [
+    0.0,
+    1.32,
+    1.275
+   ],
+   "tanks": [
+    [
+     -0.46,
+     1.893,
+     1.275
+    ],
+    [
+     0.46,
+     1.893,
+     1.275
+    ]
+   ]
+  },
+  {
+   "crate": [
+    0.0,
+    1.32,
+    0.425
+   ],
+   "tanks": [
+    [
+     -0.46,
+     1.893,
+     0.425
+    ],
+    [
+     0.46,
+     1.893,
+     0.425
+    ]
+   ]
+  },
+  {
+   "crate": [
+    0.0,
+    1.32,
+    -0.425
+   ],
+   "tanks": [
+    [
+     -0.46,
+     1.893,
+     -0.425
+    ],
+    [
+     0.46,
+     1.893,
+     -0.425
+    ]
+   ]
+  },
+  {
+   "crate": [
+    0.0,
+    1.32,
+    -1.275
+   ],
+   "tanks": [
+    [
+     -0.46,
+     1.893,
+     -1.275
+    ],
+    [
+     0.46,
+     1.893,
+     -1.275
+    ]
+   ]
+  },
+  {
+   "crate": [
+    0.0,
+    1.32,
+    -2.125
+   ],
+   "tanks": [
+    [
+     -0.46,
+     1.893,
+     -2.125
+    ],
+    [
+     0.46,
+     1.893,
+     -2.125
+    ]
+   ]
+  }
+ ],
+ "hitch": [
+  0.0,
+  0.8,
+  3.9
+ ],
+ "roverHitch": [
+  0.0,
+  0.8,
+  -2.7
+ ],
+ "tailLights": [
+  [
+   -0.7,
+   1.1,
+   -2.72
+  ],
+  [
+   0.7,
+   1.1,
+   -2.72
+  ]
+ ],
+ "mass": 60.0
+}

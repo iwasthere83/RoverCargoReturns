@@ -1,0 +1,9 @@
+bin/
+obj/
+*.blend
+*.blend1
+*.obj
+art/
+*.cfg
+*.bak
+__pycache__/

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ <ElectronicsPrinterRecipes>
+  <RecipeData>
+   <PrefabName>ItemKitRoverFrame</PrefabName>
+   <Recipe><Time>120</Time><Energy>4000</Energy><Copper>25</Copper><Steel>120</Steel><Electrum>15</Electrum><Constantan>10</Constantan><Silicon>10</Silicon></Recipe>
+   <RecipeTier>TierTwo</RecipeTier>
+  </RecipeData>
+  <RecipeData>
+   <PrefabName>ItemKitTrailerCargo</PrefabName>
+   <Recipe><Time>90</Time><Energy>3000</Energy><Copper>20</Copper><Steel>90</Steel></Recipe>
+   <RecipeTier>TierTwo</RecipeTier>
+  </RecipeData>
+  <RecipeData>
+   <PrefabName>ItemKitTrailerHab</PrefabName>
+   <Recipe><Time>120</Time><Energy>4000</Energy><Copper>25</Copper><Steel>120</Steel><Electrum>15</Electrum><Constantan>10</Constantan><Silicon>10</Silicon></Recipe>
+   <RecipeTier>TierTwo</RecipeTier>
+  </RecipeData>
+ </ElectronicsPrinterRecipes>
+</GameData>
