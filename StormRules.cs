@@ -63,7 +63,12 @@ public static class StormRules
         return null;
     }
 
-    public static float DamageFactor(bool armour) => armour ? 0.5f : 1f;
+    /// <summary>Whether a storm tick may damage the vehicle: storm armour stops storm damage altogether (the user,
+    /// 2026-10-09), and the StormDamage setting 0 means immune.</summary>
+    public static bool Weathered(bool armour, float setting) => !armour && setting > 0f;
+
+    /// <summary>The factor on the game's storm damage: the StormDamage setting, nothing with armour.</summary>
+    public static float StormDamageMultiplier(bool armour, float setting) => armour ? 0f : setting;
     public static float WindFactor(bool fairings) => fairings ? 0.5f : 1f;
 
     /// <summary>Extra downforce (m/s^2) along the chassis down axis: GripAssist's |g| x bonus, or while the thrusters

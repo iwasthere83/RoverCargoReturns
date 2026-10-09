@@ -645,8 +645,15 @@ public class CargoRover : Rover, IInternalConditioner, ICircuitHolder, IPowered
     /// <summary>Air slot 3 (the last O2 tank): the thrusters' propellant tank while they are fitted.</summary>
     public Slot PropellantSlot => _airTankSlots.Count >= 3 ? _airTankSlots[2] : null;
 
+    /// <summary>The StormDamage setting (Plugin; 0..1): applied at every storm tick, so armour fitted or removed later and the
+    /// setting take effect at once on every rover and trailer (Workshop feedback 2026-10-09).</summary>
+    public static float StormDamageSetting = 0.25f;
+
+    public override bool CanBeWeathered() =>
+        StormRules.Weathered(HasUpgrade(Upgrade.Armour), StormDamageSetting) && base.CanBeWeathered();
+
     public override void DoWeatherDamage(float damageMultiplier) =>
-        base.DoWeatherDamage(damageMultiplier * StormRules.DamageFactor(HasUpgrade(Upgrade.Armour)));
+        base.DoWeatherDamage(damageMultiplier * StormRules.StormDamageMultiplier(HasUpgrade(Upgrade.Armour), StormDamageSetting));
 
     public override Vector3 GetStormWindVector() => base.GetStormWindVector() * StormRules.WindFactor(HasUpgrade(Upgrade.Fairings));
 
@@ -811,7 +818,7 @@ public class CargoRover : Rover, IInternalConditioner, ICircuitHolder, IPowered
     protected void AppendUpgrades(StringBuilder sb)
     {
         bool any = false;
-        if (HasUpgrade(Upgrade.Armour)) { sb.AppendLine("Storm armour fitted (storm damage halved)"); any = true; }
+        if (HasUpgrade(Upgrade.Armour)) { sb.AppendLine("Storm armour fitted (no storm damage)"); any = true; }
         if (HasUpgrade(Upgrade.Fairings)) { sb.AppendLine("Wind fairings fitted (storm push halved)"); any = true; }
         if (HasUpgrade(Upgrade.Thrusters))
         {

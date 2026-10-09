@@ -4,6 +4,8 @@ A pressurised 6-wheel Cargo Rover for today's Stationeers — an original model,
 had — with two trailers to tow behind it: a cargo trailer with six bays for crates or portable tanks, and a walk-in
 habitat trailer with its own air, water and power. Also adds a third-person chase camera to every rover.
 
+**Requires:** BepInEx and StationeersLaunchPad.
+
 This mod ships no game assets. Everyone in a multiplayer game needs it installed.
 
 ## Getting the vehicles
@@ -29,8 +31,10 @@ angle grinder, drill).
 - Gas, filter and battery slots on the side panel; one slot takes a programmable chip that can read the rover's
   position, speed, heading and cabin, and run its air and lights.
 - Headlights, work lights and a light bar.
-- **Upgrades** (wrench with the material in the other hand): storm armour (10 steel sheets), wind fairings (20 plastic
-  sheets), thrusters (a Kit (Governed Gas Rocket Engine)).
+- **Upgrades** (wrench with the material in the other hand): storm armour (10 steel sheets; no storm damage), wind
+  fairings (20 plastic sheets; halves the storm's push), thrusters (a Kit (Governed Gas Rocket Engine)). The trailers
+  take armour and fairings too.
+- **Repairs**: duct tape repairs the rover and both trailers, as on any rover.
 - **Paint**: a spray can paints the body; the trim stays orange.
 
 ## The trailers

@@ -168,7 +168,13 @@ Check(StormRules.FitRefusal(Upgrade.Armour, true, 10, true) == "Storm armour alr
 Check(StormRules.FitRefusal(Upgrade.Fairings, false, 19, true) == "Needs 20 plastic sheets in the other hand", "too few sheets");
 Check(StormRules.FitRefusal(Upgrade.Thrusters, false, 1, false) == "Thrusters fit the Cargo Rover only", "thrusters rover only");
 Check(StormRules.FitVerb(Upgrade.Armour) == "Hold to fit storm armour (10 steel sheets)", "fit verb");
-Check(StormRules.DamageFactor(true) == 0.5f && StormRules.DamageFactor(false) == 1f && StormRules.WindFactor(true) == 0.5f && StormRules.WindFactor(false) == 1f, "factors");
+Check(StormRules.WindFactor(true) == 0.5f && StormRules.WindFactor(false) == 1f, "fairings halve the storm's push");
+// storm armour = no storm damage on all three vehicles (the user, 2026-10-09, after Workshop feedback); the StormDamage
+// setting scales what is left, applied at each storm tick (0 = immune), not baked into the prefab
+Check(!StormRules.Weathered(armour: true, setting: 1f) && !StormRules.Weathered(armour: false, setting: 0f) && StormRules.Weathered(armour: false, setting: 0.25f),
+      "storm: armour or StormDamage 0 means no storm damage tick at all");
+Check(StormRules.StormDamageMultiplier(armour: true, setting: 1f) == 0f && StormRules.StormDamageMultiplier(armour: false, setting: 0.25f) == 0.25f,
+      "storm: the damage is the game's times the setting, nothing with armour");
 // grip: Bonus 0.25; Venus tyre load 8.87 x 1.25 = 11.0875
 Check(Near(StormRules.GripDownforce(3.7f, 0.25f, false), 0.925f) && Near(StormRules.GripDownforce(3.7f, 0.25f, true), 11.0875f - 3.7f), "grip Mars");
 Check(Near(StormRules.GripDownforce(1.62f, 0.25f, true), 11.0875f - 1.62f) && Near(StormRules.GripDownforce(0.97f, 0.25f, true), 11.0875f - 0.97f), "grip Moon, Mimas");
@@ -980,7 +986,7 @@ Check(trailerBody.Contains("var bodyNode = Child(go.transform, \"Body\");") && t
 // ---------------------------------------------------------------- Workshop prep: About and README (sub-project 6)
 var about = System.Xml.Linq.XDocument.Load(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "About", "About.xml"))).Root;
 var pluginVersion = System.Text.RegularExpressions.Regex.Match(ModFile("Plugin.cs"), "Version = \"([0-9.]+)\"").Groups[1].Value;
-Check((string)about.Element("Version") == "0.2.0" && pluginVersion == "0.2.0", "about: version 0.2.0 in About.xml and the plugin");
+Check((string)about.Element("Version") == "0.2.1" && pluginVersion == "0.2.1", "about: version 0.2.1 in About.xml and the plugin");
 Check((string)about.Element("Author") == "BillBrasky" && (string)about.Element("Name") == "Rover (Cargo) Returns"
       && (string)about.Element("ModID") == "stationeers.rovercargo", "about: name, author and mod id");
 Check(!((string)about.Element("Description")).Contains("extract", StringComparison.OrdinalIgnoreCase)
@@ -990,4 +996,18 @@ Check(!((string)about.Element("Description")).Contains("extract", StringComparis
 // updates the item named by WorkshopHandle; without it the next Publish would create a second item
 Check(about.Element("Tags")?.Elements("Tag").Count() >= 1 && !about.Element("Tags").Elements("string").Any(), "about: tags as <Tag> (the game's format)");
 Check((string)about.Element("WorkshopHandle") == "3816061059", "about: the Workshop item's handle, so Publish updates it");
+// storm wiring (Workshop feedback 2026-10-09: StormDamage 0 still took damage; armour should make the vehicles immune)
+var stormRover = ModFile("CargoRover.cs");
+var stormPrefabs = ModFile("CargoPrefabs.cs") + ModFile("CargoPrefabs.Rover.cs");
+Check(stormRover.Contains("public override bool CanBeWeathered() =>") && stormRover.Contains("StormRules.Weathered(HasUpgrade(Upgrade.Armour), StormDamageSetting)")
+      && stormRover.Contains("StormRules.StormDamageMultiplier(HasUpgrade(Upgrade.Armour), StormDamageSetting)")
+      && !stormPrefabs.Contains("WeatherDamageScale *= _settings.StormDamage") && ModFile("Plugin.cs").Contains("CargoRover.StormDamageSetting = "),
+      "storm: armour and StormDamage are checked at every storm tick on the rover and both trailers, not baked into the prefab");
+Check(stormRover.Contains("Storm armour fitted (no storm damage)"), "storm: the hover text says armour stops storm damage");
+
+var aboutDesc = (string)about.Element("Description");
+var readmeText = string.Join(" ", File.ReadAllText(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "README.md"))).Split((char[])null, StringSplitOptions.RemoveEmptyEntries));
+Check(aboutDesc.Contains("Requires:") && aboutDesc.Contains("BepInEx") && aboutDesc.Contains("StationeersLaunchPad")
+      && readmeText.Contains("BepInEx") && readmeText.Contains("StationeersLaunchPad"), "docs: BepInEx and StationeersLaunchPad named as requirements");
+Check(readmeText.Contains("duct tape", StringComparison.OrdinalIgnoreCase) && aboutDesc.Contains("duct tape", StringComparison.OrdinalIgnoreCase) && readmeText.Contains("no storm damage"), "docs: duct tape repairs, armour stops storm damage");
 Console.WriteLine($"HabTests: {checks} checks passed");

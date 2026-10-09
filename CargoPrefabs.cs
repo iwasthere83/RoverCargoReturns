@@ -297,7 +297,6 @@ public sealed partial class CargoPrefabs
         tr.Bounds = bounds;
         tr.SurfaceArea = 40f;
         tr.ThingHealth = 1800f;
-        tr.WeatherDamageScale *= _settings.StormDamage;
         tr.PaintableMaterial = GameMaterial("ColorWhite") ?? tr.PaintableMaterial;
         // The creative menu hides entries without a thumbnail. Our clones are not paint-mask objects, so the game uses
         // the single Thumbnail, which the Mk I leaves empty (it only fills per-colour Thumbnails). Placeholder until a
