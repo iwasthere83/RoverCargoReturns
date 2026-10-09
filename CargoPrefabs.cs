@@ -35,7 +35,7 @@ public sealed partial class CargoPrefabs
 
     public sealed class Settings
     {
-        public float MotorPower = 60f, BrakePower = 20f, MaxSpeed = 6.5f, GlassAlpha = 0.18f, CabinInsulation = 0.05f;
+        public float MotorPower = 60f, BrakePower = 20f, MaxSpeed = 6.5f, GlassAlpha = 0.18f, CabinInsulation = 0.05f, HabInsulation = 0.005f;
         public bool RearWheelSteer = true;
         public float TrailerComHeight = 0.58f, HabComHeight = 0.75f, TrailerSideGrip = 1.4f, StormDamage = 0.25f;
     }
@@ -401,7 +401,7 @@ public sealed partial class CargoPrefabs
             hab.AirSupplySlot = byName.TryGetValue("AirSupply", out var a) ? a : -1;
             hab.WasteSlot = byName.TryGetValue("Waste", out var w) ? w : -1;
             hab.CabinVolumeLitres = (float?)T["cabinVolume"] ?? 26800f;
-            hab.CabinInsulation = _settings.CabinInsulation;
+            hab.CabinInsulation = _settings.HabInsulation;
             hab.SurfaceArea = (float?)T["surfaceArea"] ?? hab.SurfaceArea;
             if (T["door"] is JObject dj && Prefab.Find((string)dj["prefab"]) is Thing doorPrefab)
             {

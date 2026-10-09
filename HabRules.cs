@@ -1,5 +1,42 @@
 namespace Stationeers.RoverCargo;
 
+/// <summary>The hab's power users (MadelynPlays, 0.2.3: "1.6 kW nearly constantly").</summary>
+public enum PowerUse { Heater, Cooler, Airlock, Charger, SuitStation, Shower, Filler, Lights, Chip }
+
+/// <summary>Joules each system took from the hab batteries, per atmos tick (the game's "W"), over a window of ticks.</summary>
+public sealed class PowerLedger
+{
+    private readonly float[] _sum = new float[System.Enum.GetValues(typeof(PowerUse)).Length];
+    public int Ticks { get; private set; }
+
+    public void Add(PowerUse use, float joules) { if (joules > 0f) _sum[(int)use] += joules; }
+    public void EndTick() => Ticks++;
+    public void Reset() { System.Array.Clear(_sum, 0, _sum.Length); Ticks = 0; }
+
+    public System.Collections.Generic.Dictionary<PowerUse, float> PerTick()
+    {
+        var d = new System.Collections.Generic.Dictionary<PowerUse, float>();
+        foreach (PowerUse u in System.Enum.GetValues(typeof(PowerUse))) d[u] = Ticks > 0 ? _sum[(int)u] / Ticks : 0f;
+        return d;
+    }
+
+    public float TotalPerTick()
+    {
+        float t = 0f;
+        foreach (var s in _sum) t += s;
+        return Ticks > 0 ? t / Ticks : 0f;
+    }
+
+    /// <summary>"draw 450 W: charger 250, heater 200": the systems that drew, largest first.</summary>
+    public string Report()
+    {
+        var parts = new System.Collections.Generic.List<(float w, string name)>();
+        foreach (var kv in PerTick()) if (kv.Value > 0.05f) parts.Add((kv.Value, kv.Key.ToString().ToLowerInvariant()));
+        parts.Sort((a, b) => b.w.CompareTo(a.w));
+        return $"draw {TotalPerTick():0} W: " + (parts.Count == 0 ? "nothing" : string.Join(", ", parts.ConvertAll(p => $"{p.name} {p.w:0}")));
+    }
+}
+
 /// <summary>What the console status page shows (filled from the hab once a second; null = no tank/canister).</summary>
 public struct StatusInputs
 {

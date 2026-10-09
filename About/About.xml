@@ -3,7 +3,7 @@
  <Name>Rover (Cargo) Returns</Name>
  <ModID>stationeers.rovercargo</ModID>
  <Author>BillBrasky</Author>
- <Version>0.2.3</Version>
+ <Version>0.2.4</Version>
  <Description>[b]Requires:[/b] BepInEx and StationeersLaunchPad.
 
 Brings back a pressurised 6-wheel Cargo Rover for today's Stationeers — an original model, inspired by the Cargo Rover the game once had — with two trailers to tow behind it: a cargo trailer with six bays for crates or portable tanks, and a walk-in habitat trailer with its own air, water, power and a deployable living space.

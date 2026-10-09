@@ -309,7 +309,7 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
             case DoorPhase.PumpDown:
                 if (supply != null && HasCharge) MoveInto(cabin, supply, step, new PressurekPa(Supply.MaxSetting));   // portable tank limit, 10,132.5 kPa
                 else VentToWorld(cabin, step);
-                DrainBattery(40f);
+                DrainBattery(40f, PowerUse.Airlock);
                 break;
             case DoorPhase.Opening:
             case DoorPhase.Open:
@@ -319,7 +319,7 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
             case DoorPhase.Venting:
                 VentToWorld(cabin, step);
                 if (Time.time - _phaseStart >= PumpSeconds - dt) VentToPressure(cabin, 1f);   // finish at about 1 kPa
-                DrainBattery(40f);
+                DrainBattery(40f, PowerUse.Airlock);
                 break;
             case DoorPhase.Restoring:
             case DoorPhase.Closed:
@@ -327,6 +327,7 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
                 if (cabin.PressureGassesAndLiquids > new PressurekPa(CabinKPa + 4f)) VentToPressure(cabin, CabinKPa);   // relief
                 Filter(cabin);
                 _lastPump = HeatPump(cabin);
+                Power.Add(_lastPump < 0f ? PowerUse.Cooler : PowerUse.Heater, LastHeatPumpCost);
                 break;
         }
         SolarStep();
@@ -334,6 +335,21 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
         ShowerStep();
         FillerStep();
         SuitStationStep();
+        if (OnOff) Power.Add(PowerUse.Lights, (Button1 > 0 ? 20f : 0f) + (Button2 > 0 ? 5f : 0f));   // the vanilla rover power tick (its own tick: an estimate)
+        var (storedNow, _) = BatteryTotals();
+        if (_ledgerStoredAtStart < 0) _ledgerStoredAtStart = storedNow;
+        _ledgerSolar += SolarWatts;
+        Power.EndTick();
+        if (Power.Ticks >= 10)
+        {   // every 10 ticks (5 s): the screen's draw, and with LogClimate the breakdown
+            MeasuredDrawW = Power.TotalPerTick();
+            float net = (float)((storedNow - _ledgerStoredAtStart) / Power.Ticks), solar = (float)(_ledgerSolar / Power.Ticks);
+            if (LogClimate)
+                Debug.Log($"[RoverCargo][power] hab {ReferenceId} {Power.Report()} | solar in {solar:0} W, battery net {net:+0;-0} W, unaccounted {solar - net - Power.TotalPerTick():0} W (solar past full is lost) | door {_phase}, deployed {IsDeployed}, room {cabin.Temperature.ToFloat() - 273.15f:0} C");
+            Power.Reset();
+            _ledgerStoredAtStart = storedNow;
+            _ledgerSolar = 0;
+        }
         if (LogClimate && ++_climateTick % 10 == 0)
         {
             var b = Battery;
@@ -396,6 +412,7 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
             float j = HabRules.ChargeStep(cell.PowerDelta, src.PowerStored, ChargerRate);
             src.PowerStored -= j;
             cell.PowerStored += j;
+            Power.Add(PowerUse.Charger, j);
         }
     }
 
@@ -440,7 +457,7 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
         for (int k = 0; k < 3; k++) want[k] = cells[k] && !cells[k].IsCharged ? cells[k].PowerDelta : 0f;
         var got = ChargeToSpare ? HabRules.SplitBudget(Mathf.Min(1000f, hb.PowerStored), want) : new float[3];
         for (int k = 0; k < 3; k++)
-            if (cells[k] && got[k] > 0f) { cells[k].PowerStored += got[k]; hb.PowerStored -= got[k]; }
+            if (cells[k] && got[k] > 0f) { cells[k].PowerStored += got[k]; hb.PowerStored -= got[k]; Power.Add(PowerUse.SuitStation, got[k]); }
     }
 
     // ---- water: the game's shower, toilet and bottle filler, fed by the rack's canisters instead of pipes ----
@@ -561,7 +578,7 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
             used.Add(new Mole(Chemistry.GasType.PollutedWater, water.Quantity, water.Energy));
         }
         WasteWater.InternalAtmosphere.Add(used);
-        DrainBattery(5f);
+        DrainBattery(5f, PowerUse.Shower);
     }
 
     /// <summary>As StructureToilet: "Use" when the need is past 25 % and no suit is on; 50 mol of CLEAN WATER plus the
@@ -615,7 +632,7 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
             var energy = clean.GasMixture.Water.Energy * (m / clean.GasMixture.Water.Quantity).ToDouble();
             var got = clean.Remove(new GasMixture(new Mole(Chemistry.GasType.Water, m, energy)), AtmosphereHelper.MatterState.Liquid);
             bottle.AddLiquidToThing(got.GetTotalMolesLiquids.ToFloat() / 55.555557f);
-            DrainBattery(5f);
+            DrainBattery(5f, PowerUse.Filler);
         }
     }
 
@@ -758,11 +775,21 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
                 f.FilterGas(ref cabin.GasMixture, ref waste.InternalAtmosphere.GasMixture);
     }
 
-    private void DrainBattery(float units)
+    private void DrainBattery(float units, PowerUse use)
     {
         var b = Battery;
-        if (b != null && !b.IsEmpty) b.PowerStored = Mathf.Max(0f, b.PowerStored - units);
+        if (b == null || b.IsEmpty) return;
+        Power.Add(use, Mathf.Min(units, b.PowerStored));
+        b.PowerStored = Mathf.Max(0f, b.PowerStored - units);
     }
+
+    /// <summary>Joules each system took from the hab batteries (diagnostics now: the LogClimate line; later the screen).</summary>
+    public readonly PowerLedger Power = new();
+    /// <summary>The last 5 s of draw from the ledger (W, the game's J per atmos tick); null where the hab is not
+    /// simulated (a client), which then estimates from the battery change.</summary>
+    public double? MeasuredDrawW { get; private set; }
+    private double _ledgerStoredAtStart = -1;
+    private double _ledgerSolar;
 
     /// <summary>Inside the walls: room (x -1..1, h 1.3..3.6, z -3.05..3.0) or the extended slide-out.</summary>
     public bool ContainsPoint(Vector3 world)

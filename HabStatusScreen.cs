@@ -199,7 +199,7 @@ public class HabStatusScreen : MonoBehaviour
         }
     }
 
-    /// <summary>Every 5 s: the room (kPa, C) and power (solar W, draw W) trends. Draw is HabRules.DrawEstimate (per
+    /// <summary>Every 5 s: the room (kPa, C) and power (solar W, draw W) trends. Draw is the hab's power ledger where it is simulated, else HabRules.DrawEstimate (per
     /// atmos tick, like the game's W); while it cannot be told the trend holds the last known draw.</summary>
     private void Sample(StatusInputs s)
     {
@@ -207,8 +207,8 @@ public class HabStatusScreen : MonoBehaviour
         var cells = new StringBuilder();
         foreach (var c in s.Cells ?? Array.Empty<double>()) cells.Append(c < 0 ? '0' : '1');
         float tick = AtmosphericsManager.Instance ? AtmosphericsManager.Instance.TickSpeedSeconds : 0.5f;
-        _drawW = double.IsNaN(_lastJ) ? null : HabRules.DrawEstimate(s.SolarW, s.BatteryJ - _lastJ, Time.time - _lastT, tick,
-            s.BatteryPct >= 99.5 || _lastPct >= 99.5, cells.ToString() != _lastCells);
+        _drawW = _hab.MeasuredDrawW ?? (double.IsNaN(_lastJ) ? null : HabRules.DrawEstimate(s.SolarW, s.BatteryJ - _lastJ, Time.time - _lastT, tick,
+            s.BatteryPct >= 99.5 || _lastPct >= 99.5, cells.ToString() != _lastCells));   // measured where simulated
         _lastJ = s.BatteryJ; _lastT = Time.time; _lastPct = s.BatteryPct; _lastCells = cells.ToString();
         if (_drawW is double dw) _drawShown = dw;
         _room.Add(s.RoomKPa, s.RoomC);

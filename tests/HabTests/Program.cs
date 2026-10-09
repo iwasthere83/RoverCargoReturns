@@ -228,6 +228,34 @@ Check(!HabRules.ParkHold(true, true, 0f, 5f, true), "gas releases at once");
 Check(HabRules.ParkHold(true, false, 0.1f, 0f, true) && !HabRules.ParkHold(true, false, 0.3f, 0f, true), "stays held until the rover is shoved past 0.2 m/s");
 Check(HabRules.ParkHold(true, false, 0f, 5f, true), "held on (the hitch force at hold time can read 700+ N: it must not release it)");
 
+// power ledger (MadelynPlays, 0.2.3: "the hab uses 1.6 kW nearly constantly"): every system's joules per atmos tick
+var ledger = new PowerLedger();
+ledger.Add(PowerUse.Heater, 300f); ledger.Add(PowerUse.Charger, 500f); ledger.EndTick();
+ledger.Add(PowerUse.Heater, 100f); ledger.EndTick();
+var avg = ledger.PerTick();
+Check(Near(avg[PowerUse.Heater], 200f) && Near(avg[PowerUse.Charger], 250f) && avg[PowerUse.Shower] == 0f && ledger.Ticks == 2,
+      "power ledger: average W per system over the window (the game's W = J per atmos tick)");
+Check(Near(ledger.TotalPerTick(), 450f), "power ledger: total draw per tick");
+Check(ledger.Report().StartsWith("draw 450 W:") && ledger.Report().Contains("heater 200") && !ledger.Report().Contains("shower"),
+      "power ledger: report lists the systems that drew, largest first");
+ledger.Reset();
+Check(ledger.Ticks == 0 && ledger.TotalPerTick() == 0f, "power ledger: reset starts a new window");
+
+// the hab is insulated like a base room, not a suit (Europa, measured: 1637 W of heater at the cab's 0.05; the user's
+// choice A: always insulated, 0.005 by default, its own cfg setting)
+{
+    var plug = File.ReadAllText(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "Plugin.cs")));
+    var prefabs = File.ReadAllText(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "CargoPrefabs.cs")));
+    var habSrc = File.ReadAllText(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "CargoHab.cs")));
+    var screenSrc = File.ReadAllText(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "HabStatusScreen.cs")));
+    Check(plug.Contains("cfg.Bind(\"Cabin\", \"HabInsulation\", 0.005f") && prefabs.Contains("HabInsulation = 0.005f")
+          && prefabs.Contains("hab.CabinInsulation = _settings.HabInsulation;"),
+          "hab insulation: its own setting, 0.005 by default (a base room), the rover cab keeps Insulation");
+    Check(habSrc.Contains("public double? MeasuredDrawW") && habSrc.IndexOf("MeasuredDrawW = Power.TotalPerTick()") < habSrc.IndexOf("if (LogClimate && ++_climateTick")
+          && screenSrc.Contains("_hab.MeasuredDrawW ??"),
+          "hab screen: the draw is the power ledger's measurement (any log setting), the estimate only where none exists (a client)");
+}
+
 // what freezes (0.2.2): a hitched rig is two bodies locked through the hitch on gripping tyres; left free while parked
 // they push on each other (the rover tilts, players slide), so parked = trailer and rover frozen together, the gas frees both
 Check(HabRules.RigHold(hitched: true, deployed: false, parkHeld: true) == (true, true), "parked hitched trailer: trailer and rover frozen");
@@ -1040,7 +1068,7 @@ Check(trailerBody.Contains("var bodyNode = Child(go.transform, \"Body\");") && t
 // ---------------------------------------------------------------- Workshop prep: About and README (sub-project 6)
 var about = System.Xml.Linq.XDocument.Load(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "About", "About.xml"))).Root;
 var pluginVersion = System.Text.RegularExpressions.Regex.Match(ModFile("Plugin.cs"), "Version = \"([0-9.]+)\"").Groups[1].Value;
-Check((string)about.Element("Version") == "0.2.3" && pluginVersion == "0.2.3", "about: version 0.2.3 in About.xml and the plugin");
+Check((string)about.Element("Version") == "0.2.4" && pluginVersion == "0.2.4", "about: version 0.2.4 in About.xml and the plugin");
 Check((string)about.Element("Author") == "BillBrasky" && (string)about.Element("Name") == "Rover (Cargo) Returns"
       && (string)about.Element("ModID") == "stationeers.rovercargo", "about: name, author and mod id");
 Check(!((string)about.Element("Description")).Contains("extract", StringComparison.OrdinalIgnoreCase)

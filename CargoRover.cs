@@ -199,8 +199,12 @@ public class CargoRover : Rover, IInternalConditioner, ICircuitHolder, IPowered
     /// <summary>The vanilla conditioner runs the cabin air (the hab runs its own).</summary>
     protected virtual bool UseConditioner => true;
 
+    /// <summary>What the last HeatPump call took from the battery (joules; the hab's power ledger reads it).</summary>
+    protected float LastHeatPumpCost;
+
     protected float HeatPump(Atmosphere cabin)
     {
+        LastHeatPumpCost = 0f;
         var battery = Battery;
         if (!ClimateOn || battery == null || battery.IsEmpty || cabin.TotalMoles <= Chemistry.MINIMUM_QUANTITY_MOLES) return 0f;
         // GasMixture is a struct field: always go through cabin.GasMixture, never a local copy.
@@ -208,11 +212,13 @@ public class CargoRover : Rover, IInternalConditioner, ICircuitHolder, IPowered
         var used = new MoleEnergy(System.Math.Min(System.Math.Abs(delta.ToDouble()), ConditionerMaxEnergy * Efficiency));
         if (delta < MoleEnergy.Zero)
         {
-            battery.PowerStored -= (used * CoolPowerPerJoule).ToFloat();
+            LastHeatPumpCost = (used * CoolPowerPerJoule).ToFloat();
+            battery.PowerStored -= LastHeatPumpCost;
             PlanetaryAtmosphereSimulation.AddEnergy(cabin.GasMixture.RemoveEnergy(used));
             return -used.ToFloat();
         }
-        battery.PowerStored -= (used * HeatPowerPerJoule).ToFloat();
+        LastHeatPumpCost = (used * HeatPowerPerJoule).ToFloat();
+        battery.PowerStored -= LastHeatPumpCost;
         cabin.GasMixture.AddEnergy(used);
         return used.ToFloat();
     }
