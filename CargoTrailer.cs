@@ -80,6 +80,9 @@ public class CargoTrailer : CargoRover
                   $" || rb drag={trb.drag:0.00} angDrag={trb.angularDrag:0.00} constraints={trb.constraints}");
     }
 
+    /// <summary>The hitch's yaw limit either way (degrees): no jackknife into the rover or its fitted upgrades.</summary>
+    protected virtual float HitchYawLimit => 70f;
+
     private ConfigurableJoint _joint;
     private Quaternion _hitchRel = Quaternion.identity;   // trailer rotation in the rover's frame when hitched (the limits' zero)
 
@@ -189,6 +192,68 @@ public class CargoTrailer : CargoRover
         }
         bool lights = IsHitched && _tow.OnOff && _tow.Powered && _tow.Button1 == 1;
         foreach (var l in TailLights) if (l && l.enabled != lights) l.enabled = lights;
+        ApplyRigHold();
+    }
+
+    /// <summary>True while the trailer stands on its own legs (the deployed hab): frozen, and its rover with it.</summary>
+    protected virtual bool OnLegs => false;
+
+    private float _stillFor;
+    private bool _parkHeld, _selfFrozen;
+    private CargoRover _frozenRover;
+    public bool IsParkHeld => _parkHeld;
+
+    /// <summary>Freeze (kinematic) what HabRules.RigHold says: a parked hitched rig, trailer and rover together, and a
+    /// deployed hab with its rover. Only what this code froze is ever released, so a body the game itself holds
+    /// kinematic (a remote client's copy) is left alone.</summary>
+    private void ApplyRigHold()
+    {
+        bool deployed = OnLegs;
+        bool parkHold = !deployed && HasAuthority && UpdateParkHold();
+        if (!parkHold) { _parkHeld = false; if (deployed) _stillFor = 0f; }
+        var (trailer, rover) = HabRules.RigHold(IsHitched, deployed, parkHold);
+        SetRoverFrozen(rover ? _tow : null);
+        if (!RigidBody) return;
+        if (trailer && !RigidBody.isKinematic) { RigidBody.isKinematic = true; _selfFrozen = true; }
+        else if (!trailer && _selfFrozen)
+        {
+            _selfFrozen = false;
+            RigidBody.isKinematic = false;
+            RigidBody.WakeUp();
+        }
+    }
+
+    /// <summary>The parked hold's clock (HabRules.ParkHold): on the authority, while the rig stands still with no gas.</summary>
+    private bool UpdateParkHold()
+    {
+        var r = TowingRover;
+        bool driving = r != null && Mathf.Abs(r.TargetMotorPower) > 0.5f;
+        if (r != null && !driving)                                      // a remote driver's gas shows up as wheel torque
+            foreach (var w in r.Wheels) if (w?.WheelCollider != null && Mathf.Abs(w.WheelCollider.motorTorque) > 0.5f) { driving = true; break; }
+        float rs = r != null && r.RigidBody && !r.RigidBody.isKinematic ? r.RigidBody.velocity.magnitude : 0f;
+        float hs = _parkHeld || !RigidBody || RigidBody.isKinematic ? 0f : RigidBody.velocity.magnitude;
+        _stillFor = r != null && !driving && rs < HabRules.ParkStillSpeed && hs < HabRules.ParkStillSpeed ? _stillFor + Time.deltaTime : 0f;
+        bool was = _parkHeld;
+        _parkHeld = HabRules.ParkHold(r != null, driving, rs, _stillFor, _parkHeld);
+        if (!_parkHeld && was) _stillFor = 0f;
+        if (_parkHeld != was && TowDiagnostics) Debug.Log($"[RoverCargo][tow] {name} park hold {(_parkHeld ? "on" : $"off (driving={driving}, rover v={rs:0.00}, hitch {HitchForce:0} N)")}");
+        return _parkHeld;
+    }
+
+    /// <summary>The towing rover is held with the trailer: held alone, the trailer became a fixed post the parked rover
+    /// still pushed on (22 to 840 N in 20 s, a slight twist, and a nose kick when released). Only a rover this machine
+    /// simulates and that was not already kinematic; released (and woken) with the trailer.</summary>
+    private void SetRoverFrozen(CargoRover r)
+    {
+        if (r != null && (!r.HasAuthority || !r.RigidBody)) r = null;
+        if ((object)_frozenRover == r) return;
+        if ((object)_frozenRover != null && _frozenRover && _frozenRover.RigidBody)
+        {
+            _frozenRover.RigidBody.isKinematic = false;
+            _frozenRover.RigidBody.WakeUp();
+        }
+        _frozenRover = null;
+        if (r != null && !r.RigidBody.isKinematic) { r.RigidBody.isKinematic = true; _frozenRover = r; }
     }
 
     public override DelayedActionInstance AttackWith(Attack attack, bool doAction = true)
@@ -243,7 +308,7 @@ public class CargoTrailer : CargoRover
         _hitchRel = Quaternion.Inverse(rover.RigidBody.rotation) * RigidBody.rotation;
         _joint.lowAngularXLimit = new SoftJointLimit { limit = -35f };
         _joint.highAngularXLimit = new SoftJointLimit { limit = 35f };
-        _joint.angularYLimit = new SoftJointLimit { limit = 70f };  // no jackknife into the rover
+        _joint.angularYLimit = new SoftJointLimit { limit = HitchYawLimit };  // no jackknife into the rover
         _joint.angularZLimit = new SoftJointLimit { limit = 30f };
         _joint.projectionMode = JointProjectionMode.PositionAndRotation;
         _joint.projectionDistance = 0.05f;
@@ -285,6 +350,7 @@ public class CargoTrailer : CargoRover
 
     public override void OnDestroy()
     {
+        SetRoverFrozen(null);
         Unhitch();
         base.OnDestroy();
     }

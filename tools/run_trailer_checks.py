@@ -1,6 +1,6 @@
 """Run the trailers' running-gear checks headless (both variants: the cargo trailer and the hab):
 
-    blender -b --factory-startup art/trailer_cargo_blockout.blend --python-exit-code 1 --python tools/run_trailer_checks.py
+    blender -b --factory-startup art/rover_cargo.blend --python-exit-code 1 --python tools/run_trailer_checks.py
 
 Also checks their colours (blender_trailer_checks.palette). Prints the result as JSON and exits 0 only when all pass.
 """

@@ -3,14 +3,14 @@
  <Name>Rover (Cargo) Returns</Name>
  <ModID>stationeers.rovercargo</ModID>
  <Author>BillBrasky</Author>
- <Version>0.2.1</Version>
+ <Version>0.2.2</Version>
  <Description>[b]Requires:[/b] BepInEx and StationeersLaunchPad.
 
 Brings back a pressurised 6-wheel Cargo Rover for today's Stationeers — an original model, inspired by the Cargo Rover the game once had — with two trailers to tow behind it: a cargo trailer with six bays for crates or portable tanks, and a walk-in habitat trailer with its own air, water, power and a deployable living space.
 
 The rover: a sealed cab with working air (O2 supply, filtration into the waste tank, climate control), a touch dashboard, covered side bays, gas, filter and battery slots, headlights and work lights, and optional storm armour (no storm damage), fairings and thrusters. Print the kits on the Electronics Printer (Tier Two), place the frame and build it up in stages; take it apart again with a drill. Duct tape repairs the rover and both trailers. A spray can paints the body. Also adds a chase camera for all rovers.
 
-[b]Early release — feedback wanted.[/b] This is the first public version and it has only been played single-player so far. Multiplayer (hosting, joining, towing and the habitat with more than one player) is untested. If you try it, please leave a comment with what worked and what didn't — and for bugs, the lines starting with [RoverCargo] from your Player.log.
+[b]Early release — feedback wanted.[/b] This is an early release and it has only been played single-player so far. Multiplayer (hosting, joining, towing and the habitat with more than one player) is untested. If you try it, please leave a comment with what worked and what didn't — and for bugs, the lines starting with [RoverCargo] from your Player.log.
 
 This mod ships no game assets. Everyone in a multiplayer game needs it. Settings in RoverCargo.cfg.</Description>
  <WorkshopHandle>3816061059</WorkshopHandle>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Assets.Scripts;
@@ -75,6 +76,22 @@ public sealed partial class CargoPrefabs
             if (habPrefab != null) TryFrame(hab, habPrefab, HabFrameName, HabKitName, mk1Kit, mk1Frame, isRover: false);
         }
         return rover;
+    }
+
+    /// <summary>The game's stairs surface (the user's 0.2.1 report: players slid down the hab stairs). The player's body is
+    /// "Zero Friction" (combine Minimum), so a collider without a material gives 0 friction and the idle damping only halves
+    /// the slide; the game's stairs carry "Stairs" (static 1, dynamic 0.3, Maximum, which wins). Taken from a stairs
+    /// prefab; if the game has none, a copy with the same values.</summary>
+    private PhysicMaterial StairsMaterial()
+    {
+        foreach (var p in WorldManager.Instance.SourcePrefabs)
+        {
+            if (p is not Assets.Scripts.Objects.Structures.Stairs) continue;
+            var m = p.GetComponentsInChildren<Collider>(true).Select(c => c.sharedMaterial).FirstOrDefault(x => x && x.frictionCombine == PhysicMaterialCombine.Maximum);
+            if (m) return m;
+        }
+        _log.Add("no game stairs material found: the hab stairs use a copy (static 1, dynamic 0.3, Maximum)");
+        return new PhysicMaterial("RoverCargoStairs") { staticFriction = 1f, dynamicFriction = 0.3f, frictionCombine = PhysicMaterialCombine.Maximum };
     }
 
     private static void Register(Thing thing)
@@ -298,10 +315,7 @@ public sealed partial class CargoPrefabs
         tr.SurfaceArea = 40f;
         tr.ThingHealth = 1800f;
         tr.PaintableMaterial = GameMaterial("ColorWhite") ?? tr.PaintableMaterial;
-        // The creative menu hides entries without a thumbnail. Our clones are not paint-mask objects, so the game uses
-        // the single Thumbnail, which the Mk I leaves empty (it only fills per-colour Thumbnails). Placeholder until a
-        // rendered trailer thumbnail exists.
-        tr.Thumbnail = Thumbnail(name) ?? mk1.Thumbnail ?? mk1.Thumbnails?.FirstOrDefault(s => s != null) ?? Thumbnail(RoverName);
+        VehicleThumbnail(tr, trailer, name);
         tr.Blueprint = BuildTrailerBlueprint(mk1.Blueprint, bodyFilter.sharedMesh, name) ?? tr.Blueprint;
 
         tr.TailLights = new List<Light>();
@@ -337,7 +351,8 @@ public sealed partial class CargoPrefabs
             if (hab.Ladder)
             {
                 hab.Ladder.localEulerAngles = hab.LadderStowEuler;   // Travel pose: folded up
-                foreach (var c in hab.Ladder.GetComponentsInChildren<Collider>(true)) c.enabled = false;
+                var stairs = StairsMaterial();
+                foreach (var c in hab.Ladder.GetComponentsInChildren<Collider>(true)) { c.enabled = false; c.sharedMaterial = stairs; }
             }
             // JoinInProgressSync: without it Interactable.State always reads 0 and is neither saved nor synced
             var panelBox = hab.DeployPanel as BoxCollider;
@@ -570,6 +585,27 @@ public sealed partial class CargoPrefabs
                 if (m && !_gameMaterials.ContainsKey(m.name)) _gameMaterials[m.name] = m;
         }
         return _gameMaterials.TryGetValue(name, out var mat) ? mat : null;
+    }
+
+    /// <summary>A vehicle's picture (Stationpedia, creative menu, every paint colour): our render <assets>/textures/<prefab>.png
+    /// (tools/render_stage_views.py vehicles), else its kit's render beside it. Never the game's own pictures: its
+    /// "RoverCargo" is the 2020 rover and the Mk I has no single one (the user's 0.2.1 Stationpedia report). The creative
+    /// menu hides an entry without a picture.</summary>
+    private void VehicleThumbnail(Thing vehicle, CargoLayout assets, string prefab)
+    {
+        var dir = Path.Combine(assets.Dir, "textures");
+        var pic = PngSprite(Path.Combine(dir, prefab + ".png"));
+        if (!pic)
+        {
+            var kit = Directory.Exists(dir) ? Directory.GetFiles(dir, "ItemKit*.png").FirstOrDefault() : null;
+            pic = kit != null ? PngSprite(kit) : null;
+            _log.Add($"{prefab}: no textures/{prefab}.png, {(pic ? "using its kit's picture" : "no picture (hidden from the creative menu)")}");
+        }
+        if (!pic) return;
+        pic.name = prefab;
+        vehicle.Thumbnail = pic;
+        if (vehicle.Thumbnails != null && vehicle.Thumbnails.Length > 0)
+            vehicle.Thumbnails = Enumerable.Repeat(pic, vehicle.Thumbnails.Length).ToArray();
     }
 
     private static Sprite Thumbnail(string prefabName)

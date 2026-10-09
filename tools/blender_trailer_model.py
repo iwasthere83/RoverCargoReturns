@@ -495,6 +495,7 @@ HAB_TWO_TONE = 1.65      # the hab outside: silver above, gunmetal below this li
 HAB_SEAMS = dict(z=(-2.60, -1.90, -1.20, -0.50, 0.20, 0.90, 1.60, 2.30), h=(2.55,), x=(0.0,))
 HAB_FRAME_BOX = ((-1.0, 1.164, -3.288), (1.0, 3.205, -2.788))    # StructureCompositeDoor frame (x, h, z), from its mesh
 HAB_LANDING_Z = -3.36                                            # door landing ends 4 cm before the ladder hinge axis
+HAB_LANDING_BARS = 8                                             # 13 mm bars on a 21.5 mm pitch, from there to the wall
 # Cradle straps round the portable tanks (tank: r 0.42 at most, base ring r 0.356, top at +1.177, origin +0.573)
 HAB_CRADLE = dict(r=0.437, t=0.012, w=0.05, heights=(1.62, 2.00))
 SHARED_FRAME = ("HAB_Hull", "HAB_TailLenses", "HAB_RearStep", "HAB_Drawbar", "HAB_Lunette", "HAB_Truss", "HAB_Jack")
@@ -946,17 +947,19 @@ def _hab_rear(col, out):
     out.append(finish(pb, col, bevel=0.008, bevel_segments=1))
     out.append(finish(pl, col, bevel=0.003, bevel_segments=1))
     out.append(finish(pg, col))
-    # landing at the door sill (bars on two gussets against the door frame) and the static hinge knuckles + pin
+    # landing at the door sill (bars on two gussets welded to the hab's rear wall) and the static hinge knuckles + pin.
+    # The game's door frame has nothing under the doorway, so the landing runs back to the shell (the user's 0.2.1
+    # report: ending at the frame box it floated 8.5 cm off the wall)
     hx, hh, hz = D["ladder_hinge"]
-    zf = fx[0][2] + 0.003                                                             # 3 mm into the frame face
+    zf = -HAB["out_half_l"] + EMB                                                     # into the rear wall
     pk = Part("HAB_Landing", "gunmetal")
-    for k in range(4):
+    for k in range(HAB_LANDING_BARS):
         z0 = HAB_LANDING_Z + k * 0.0215
         box(pk, -0.495, 0.495, 1.42, 1.45, z0, min(z0 + 0.013, zf))
     box(pk, -0.52, -0.49, 1.412, 1.452, HAB_LANDING_Z, zf)
     box(pk, 0.49, 0.52, 1.412, 1.452, HAB_LANDING_Z, zf)
     for x in (-0.30, 0.30):
-        prism(pk, [(zf, 1.42 + EMB), (zf, 1.28), (HAB_LANDING_Z + 0.01, 1.42 + EMB)], x - 0.006, x + 0.006,
+        prism(pk, [(zf, 1.42 + EMB), (zf, HAB["low_h"] + 0.01), (HAB_LANDING_Z + 0.01, 1.42 + EMB)], x - 0.006, x + 0.006,
               lambda z, h, xx: T(xx, h, z))
     for s in (1, -1):
         box(pk, min(s * 0.37, s * 0.44), max(s * 0.37, s * 0.44), hh - 0.02, hh + 0.022, hz, HAB_LANDING_Z + 0.005)
@@ -1286,11 +1289,16 @@ def hab_checks():
         if min_yaw is not None:
             break
     (fx0, fh0, fz0), (fx1, fh1, fz1) = HAB_FRAME_BOX
-    rear = [o for o in body if not o.name.startswith(("HAB_Shell",) + fixtures)]
+    # the landing runs under the doorway into the wall: the game's frame is open there (its box reaches h 1.164 only at
+    # the posts; in game the old landing ended at the box face and hung 8.5 cm off the wall)
+    rear = [o for o in body if not o.name.startswith(("HAB_Shell", "HAB_Landing") + fixtures)]
     in_frame = [p for p in _points(rear, deps) if fx0 + 0.005 < p[0] < fx1 - 0.005 and fh0 + 0.005 < p[1] < fh1 - 0.005
                 and fz0 + 0.005 < p[2] < fz1 - 0.005]
+    landing = _points([o for o in body if o.name.startswith("HAB_Landing")], deps)
+    shell = [p for p in _points([o for o in body if o.name.startswith("HAB_Shell")], deps) if abs(p[0]) < 0.5 and HAB["low_h"] < p[1] < 1.45]
+    wall_gap = round(min(p[2] for p in shell) - max(p[2] for p in landing), 4) if landing and shell else None   # > 0: floats
     result = {"points": len(pts), "tyre_hits": len(tyre_hits), "room_blocked": len(room_blocked), "min_yaw_deg": min_yaw,
-              "door_frame_hits": len(in_frame)}
+              "door_frame_hits": len(in_frame), "landing_wall_gap": wall_gap}
     D = HAB_DEPLOY
     slide = _points([o for o in bpy.data.collections["GEO_HabSlideOut"].objects if o.type == "MESH"], deps)
     out_pts = [(x - D["slide_travel"], h, z) for x, h, z in slide]          # deployed pose

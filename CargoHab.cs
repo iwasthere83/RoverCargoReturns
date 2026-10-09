@@ -131,44 +131,51 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
 
     public bool IsDeployed => DeployState == 1;
 
-    private float _stillFor;
-    private bool _parkHeld;
-    public bool IsParkHeld => _parkHeld;
+    /// <summary>On its legs (deploying, deployed or stowing): the shared rig hold freezes the hab and its rover. Before the
+    /// first frame's snap, the saved deploy state decides.</summary>
+    protected override bool OnLegs => _progress > 0f || (_progress < 0f && DeployState == 1);
 
-    private CargoRover _frozenRover;
+    /// <summary>The hab's front corner brushed the rover's upgrade tail plate at 70 deg (tools/blender_rover_checks tow).</summary>
+    protected override float HitchYawLimit => 65f;
 
-    /// <summary>The towing rover is held with the hab: held alone, the hab became a fixed post the parked rover still
-    /// pushed on (22 to 840 N in 20 s, a slight twist, and a nose kick when released). Only a rover this machine
-    /// simulates and that was not already kinematic; released (and woken) with the hab.</summary>
-    private void SetRoverFrozen(CargoRover r)
+    private GameObject _stairs;
+    private readonly List<(BoxCollider src, Transform copy)> _stairPairs = new();
+
+    /// <summary>The stairs players walk on (the user's 0.2.1 reports: they slid down, then with grip could not climb).
+    /// The game's slope walking and step-up skip every collider on a rigidbody, so the hab's own stair collider (on the
+    /// hab's body) stays off; while the ladder is fully down a static copy of it stands in the world, as the game's own
+    /// stairs do, with their Stairs surface. The deployed hab is frozen; the copy still follows it every frame.</summary>
+    private void SyncStairs(bool down)
     {
-        if (r != null && (!r.HasAuthority || !r.RigidBody)) r = null;
-        if ((object)_frozenRover == r) return;
-        if ((object)_frozenRover != null && _frozenRover && _frozenRover.RigidBody)
+        if (Ladder)
+            foreach (var c in Ladder.GetComponentsInChildren<Collider>(true))
+                if (c.enabled) c.enabled = false;
+        if (!down || !Ladder)
         {
-            _frozenRover.RigidBody.isKinematic = false;
-            _frozenRover.RigidBody.WakeUp();
+            if (_stairs) Destroy(_stairs);
+            _stairs = null;
+            _stairPairs.Clear();
+            return;
         }
-        _frozenRover = null;
-        if (r != null && !r.RigidBody.isKinematic) { r.RigidBody.isKinematic = true; _frozenRover = r; }
+        if (!_stairs)
+        {
+            _stairs = new GameObject("RoverCargoHabStairs") { layer = Ladder.gameObject.layer };
+            _stairPairs.Clear();
+            foreach (var src in Ladder.GetComponentsInChildren<BoxCollider>(true))
+            {
+                var g = new GameObject(src.name) { layer = src.gameObject.layer };
+                g.transform.SetParent(_stairs.transform, false);
+                var bc = g.AddComponent<BoxCollider>();
+                bc.center = src.center;
+                bc.size = Vector3.Scale(src.size, src.transform.lossyScale);
+                bc.sharedMaterial = src.sharedMaterial;
+                _stairPairs.Add((src, g.transform));
+            }
+        }
+        foreach (var (src, copy) in _stairPairs)
+            if (src) copy.SetPositionAndRotation(src.transform.position, src.transform.rotation);
     }
 
-    /// <summary>Hold the parked hitched hab still (see HabRules.ParkHold); every frame, on the authority.</summary>
-    private bool UpdateParkHold()
-    {
-        var r = TowingRover;
-        bool driving = r != null && Mathf.Abs(r.TargetMotorPower) > 0.5f;
-        if (r != null && !driving)                                      // a remote driver's gas shows up as wheel torque
-            foreach (var w in r.Wheels) if (w?.WheelCollider != null && Mathf.Abs(w.WheelCollider.motorTorque) > 0.5f) { driving = true; break; }
-        float rs = r != null && r.RigidBody && !r.RigidBody.isKinematic ? r.RigidBody.velocity.magnitude : 0f;
-        float hs = _parkHeld || !RigidBody || RigidBody.isKinematic ? 0f : RigidBody.velocity.magnitude;
-        _stillFor = r != null && !driving && rs < HabRules.ParkStillSpeed && hs < HabRules.ParkStillSpeed ? _stillFor + Time.deltaTime : 0f;
-        bool was = _parkHeld;
-        _parkHeld = HabRules.ParkHold(r != null, driving, rs, _stillFor, _parkHeld);
-        if (!_parkHeld && was) _stillFor = 0f;
-        if (_parkHeld != was && TowDiagnostics) Debug.Log($"[RoverCargo][tow] hab park hold {(_parkHeld ? "on" : $"off (driving={driving}, rover v={rs:0.00}, hitch {HitchForce:0} N)")}");
-        return _parkHeld;
-    }
     public float Progress => Mathf.Max(0f, _progress);
     protected override bool TeardownHabOut => IsDeployed || Progress > 0f;
     private Interactable DeployInteractable => _deploy ??= Interactables.Find(i => i.Action == DeployAction);
@@ -199,7 +206,7 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
     public override void OnDestroy()
     {
         _spray?.Cancel();
-        SetRoverFrozen(null);
+        SyncStairs(false);
         if ((object)_anchored != null) Anchored.Remove(_anchored);   // also when the rover is already destroyed
         SetDeployed(this, false);
         base.OnDestroy();
@@ -240,16 +247,7 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
         _lastState = state;
         if (_remeasureAt > 0f && Time.time >= _remeasureAt) { MeasureLegs(); _remeasureAt = -1f; }
         ApplyPose(_progress);
-        bool deployedLock = _progress > 0f;
-        bool parkHold = !deployedLock && HasAuthority && UpdateParkHold();   // parked hitched (HabRules.ParkHold)
-        if (!parkHold) { _parkHeld = false; _stillFor = deployedLock ? 0f : _stillFor; }
-        SetRoverFrozen(parkHold ? TowingRover : null);
-        bool locked = deployedLock || parkHold;
-        if (RigidBody && RigidBody.isKinematic != locked)
-        {
-            RigidBody.isKinematic = locked;
-            if (!locked) RigidBody.WakeUp();
-        }
+        bool deployedLock = _progress > 0f;                  // frozen with its rover by CargoTrailer's rig hold (OnLegs)
         var rover = deployedLock ? TowingRover : null;       // the rover this hab holds, if any (deployed only: parked may drive)
         if (rover != _anchored)
         {
@@ -257,10 +255,7 @@ public class CargoHab : CargoTrailer, IExitable, ILifeSuspender
             if (rover != null) Anchored.Add(rover);
             _anchored = rover;                                // unhitching or stowing releases the old rover
         }
-        bool ladderSolid = _progress >= 0.999f;
-        if (Ladder)
-            foreach (var c in Ladder.GetComponentsInChildren<Collider>(true))
-                if (c.enabled != ladderSolid) c.enabled = ladderSolid;
+        SyncStairs(_progress >= 0.999f);
         if (!_doorInit) { _phase = IsDoorOpen ? DoorPhase.Open : DoorPhase.Closed; _leaf = IsDoorOpen ? 1f : 0f; _doorInit = true; }
         bool wantOpen = IsDoorOpen;
         float t = Time.time - _phaseStart;

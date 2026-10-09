@@ -1,6 +1,6 @@
 """Run the frames' build-stage checks headless, all three vehicles:
 
-    blender -b --factory-startup art/trailer_cargo_blockout.blend --python-exit-code 1 --python tools/run_stage_checks.py [-- rover|cargo|hab]
+    blender -b --factory-startup art/rover_cargo.blend --python-exit-code 1 --python tools/run_stage_checks.py [-- rover|cargo|hab]
 
 Prints the result as JSON and exits 0 only when all pass."""
 import json

@@ -13,7 +13,7 @@ namespace Stationeers.RoverCargo;
 /// <summary>StationeersLaunchPad entry point (same pattern as Stationeers.WirelessUpgrade).</summary>
 public class Plugin : MonoBehaviour
 {
-    public const string Version = "0.2.1";
+    public const string Version = "0.2.2";
     private static Harmony _harmony;
     private static CargoLayout _trailer, _hab, _original;
     private static CargoPrefabs.Settings _settings;

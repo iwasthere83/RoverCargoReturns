@@ -300,4 +300,14 @@ public static class HabRules
         if (holding) return roverSpeed < ParkReleaseSpeed;
         return stillSeconds >= ParkHoldSeconds;
     }
+
+    /// <summary>What a trailer freezes (kinematic). A hitched rig left free while parked is two bodies locked through the
+    /// hitch on gripping tyres that push on each other (the rover tilts, players slide), so: parked = trailer and rover
+    /// frozen together, the gas frees both (ParkHold). A deployed hab stands on its legs and freezes its rover too: left
+    /// free, the rover leaned on the fixed hab. An unhitched trailer is free (its parking brake holds it).</summary>
+    public static (bool trailer, bool rover) RigHold(bool hitched, bool deployed, bool parkHeld)
+    {
+        bool trailer = deployed || (hitched && parkHeld);
+        return (trailer, hitched && trailer);
+    }
 }

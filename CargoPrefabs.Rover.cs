@@ -320,7 +320,7 @@ public sealed partial class CargoPrefabs
         cr.CabinOutputSettingKPa = (float)F["OutputSetting"];
         cr.CabinTemperatureK = (float)F["OutputTemperature"];
         cr.PaintableMaterial = GameMaterial("ColorWhite") ?? cr.PaintableMaterial;
-        cr.Thumbnail = Thumbnail(RoverName) ?? cr.Thumbnail;
+        VehicleThumbnail(cr, rover, RoverName);
         _partialBlueprint = BuildTrailerBlueprint(mk1.Blueprint, bodyMesh, RoverName);
         cr.Blueprint = _partialBlueprint ?? cr.Blueprint;
 

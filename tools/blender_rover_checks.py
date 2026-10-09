@@ -275,17 +275,17 @@ def _tow_points(coll, origin_y, hitch_z):
 
 
 def tow_clearance():
-    """Trailer and hab hitched to the new pin, yawed 0..70 deg (the joint's limit): first yaw with contact on the
+    """Trailer and hab hitched to the new pin, yawed 0..their joint limit (CargoTrailer.HitchYawLimit: 70, the hab 65): first yaw with contact on the
     rover body (and its fitted upgrades), and on the rover's rear tyres (straight and at full counter-steer)."""
     import blender_rover_upgrades as bu
     bvhs = _body_bvhs(bu.FITTED)
     hx, hh, hz = m.HITCH
     rear_z = next(z for n, z, _ in m.AXLES if n == "Rear")
     out = {}
-    for label, coll, oy, hitch in (("trailer", "GEO_TrailerCargo", g.TRAILER_Y, 3.9), ("hab", "GEO_TrailerHab", g.HAB_ORIGIN_Y, 3.9 + g.HAB_EXT)):
+    for label, coll, oy, hitch, limit in (("trailer", "GEO_TrailerCargo", g.TRAILER_Y, 3.9, 70), ("hab", "GEO_TrailerHab", g.HAB_ORIGIN_Y, 3.9 + g.HAB_EXT, 65)):
         pts = _tow_points(coll, oy, hitch)
         first_body = first_tyre = None
-        for deg in range(0, 71, 5):
+        for deg in range(0, limit + 1, 5):
             a = math.radians(deg)
             ca, sa = math.cos(a), math.sin(a)
             world = [m.U(hx + x * ca + z * sa, h, hz - x * sa + z * ca) for x, h, z in pts]

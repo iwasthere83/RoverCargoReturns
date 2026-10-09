@@ -1,6 +1,6 @@
 """Run the original rover's model checks headless (the saved art .blend holds the REF items and the trailers):
 
-    blender -b --factory-startup art/trailer_cargo_blockout.blend --python-exit-code 1 --python tools/run_rover_checks.py
+    blender -b --factory-startup art/rover_cargo.blend --python-exit-code 1 --python tools/run_rover_checks.py
 
 Builds the model and wheels from code, runs blender_rover_checks.rover_checks() and coplanar(), prints the result as
 JSON and exits 0 only when every check passes and no face is coplanar.

@@ -15,6 +15,7 @@ ALLOWED = [                                    # every shipped file matches one 
     "GameData/*.xml", "GameData/Language/*.xml",
     "RoverAssets/rover.json", "TrailerAssets/trailer.json", "HabAssets/hab.json", "HabAssets/interior.json",
     "*Assets/meshes/*.rcm", "*Assets/textures/ItemKit*.png",
+    "RoverAssets/textures/RoverCargo.png", "TrailerAssets/textures/TrailerCargo.png", "HabAssets/textures/TrailerHab.png",
 ]
 
 

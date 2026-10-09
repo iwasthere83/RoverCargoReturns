@@ -5,44 +5,49 @@
   <Font>font_english</Font>
   <Things>
     <RecordThing>
+      <Key>RoverCargo</Key>
+      <Value>Rover (Cargo)</Value>
+      <Description>A pressurised six-wheel rover for long hauls. The sealed cab seats two: the air pump fills it from the O2 canisters, filtration sends used air to the waste canister and climate control holds the temperature, so the helmet can come off once it is pressurised. Covered side bays carry crates and portable tanks (wrench a bay door open, then place the item beside it), the side panel takes gas, filter and battery canisters and a programmable chip, and the touch dashboard runs drive, lights, air and power. Upgrades go on with a wrench and the material in the other hand: storm armour (10 steel sheets, no storm damage), wind fairings (20 plastic sheets, halves the storm's push) and thrusters (a Kit (Governed Gas Rocket Engine)). Tows a Trailer (Cargo) or a Trailer (Habitat) from its rear hitch. Duct tape repairs it and a spray can paints the body. Parked, a drill turns it back into its frame.</Description>
+    </RecordThing>
+    <RecordThing>
       <Key>TrailerCargo</Key>
       <Value>Trailer (Cargo)</Value>
-      <Description>A three-axle trailer for the Rover (Cargo). Wrench its drawbar near the rover's rear hitch to couple it. The deck has six bays, each carrying one crate or two portable tanks.</Description>
+      <Description>A three-axle trailer for the Rover (Cargo). Back the rover up to it and use a wrench on the drawbar to hitch it; wrench it again to let go. Unhitched, it holds its brakes. The deck has six bays, each carrying one crate or two portable tanks: place the item beside the bay you want. Takes storm armour and wind fairings, like the rover. Duct tape repairs it and a spray can paints the body. Parked, a drill turns it back into its frame.</Description>
     </RecordThing>
     <RecordThing>
       <Key>TrailerHab</Key>
       <Value>Trailer (Habitat)</Value>
-      <Description>A three-axle habitat trailer for the Rover (Cargo): a walk-in field base. Wrench its drawbar near the rover's rear hitch to couple it.</Description>
-    </RecordThing>
-    <RecordThing>
-      <Key>ItemKitTrailerCargo</Key>
-      <Value>Kit (Trailer Cargo)</Value>
-      <Description>Place it to start a Trailer (Cargo) frame. Build the frame up with a welder and 10 steel sheets, then a wrench and 10 plastic sheets.</Description>
-    </RecordThing>
-    <RecordThing>
-      <Key>StructureTrailerCargo</Key>
-      <Value>Trailer (Cargo) Frame</Value>
-      <Description>A Trailer (Cargo) being built. Welder and 10 steel sheets for the deck and pods, then a wrench and 10 plastic sheets to finish it.</Description>
-    </RecordThing>
-    <RecordThing>
-      <Key>ItemKitTrailerHab</Key>
-      <Value>Kit (Trailer Habitat)</Value>
-      <Description>Place it to start a Trailer (Habitat) frame. Build it up with a welder and 20 steel sheets, a wrench and 20 plastic sheets, then a wrench and 8 electronic parts.</Description>
-    </RecordThing>
-    <RecordThing>
-      <Key>StructureTrailerHab</Key>
-      <Value>Trailer (Habitat) Frame</Value>
-      <Description>A Trailer (Habitat) being built. Welder and 20 steel sheets for the floor and wall frame, a wrench and 20 plastic sheets for the shell, a wrench and 8 electronic parts to finish it.</Description>
+      <Description>A three-axle habitat trailer for the Rover (Cargo): a walk-in field base. Hitch it like the cargo trailer, with a wrench on the drawbar. To set up camp, use a wrench on the deploy panel (front left): the stabiliser legs, the slide-out and the stairs come out, and the rover stays put while it is deployed. Wrench the panel again to pack it up before towing. Inside are an airlock door, two bunks, a shower, a toilet, water and a status screen; roof solar charges its battery. The air comes from the portable tank in the AIR SUPPLY cradle on the front, and used air goes to the tank in the WASTE cradle. Takes storm armour and wind fairings. Duct tape repairs it and a spray can paints the body. Parked and packed up, a drill turns it back into its frame.</Description>
     </RecordThing>
     <RecordThing>
       <Key>ItemKitRoverFrame</Key>
       <Value>Kit (Rover Cargo)</Value>
-      <Description>Place it to start a Rover (Cargo) frame. Build it up with a welder and 10 steel sheets, then 10 plastic sheets in one hand and 4 electronic parts in the other.</Description>
+      <Description>Printed on the Electronics Printer (Tier Two). Place it to start a Rover (Cargo) frame, then build it up: a welder and 10 steel sheets, then 10 plastic sheets in one hand and 4 electronic parts in the other. The last step turns the frame into the rover.</Description>
     </RecordThing>
     <RecordThing>
       <Key>StructureRover</Key>
       <Value>Rover (Cargo) Frame</Value>
-      <Description>A Rover (Cargo) being built. Welder and 10 steel sheets for the hull, then 10 plastic sheets and 4 electronic parts to finish it.</Description>
+      <Description>A Rover (Cargo) being built. A welder and 10 steel sheets for the hull, then 10 plastic sheets and 4 electronic parts to finish it. It comes down the same way, stage by stage back to its kit, each stage giving its materials back; the tooltip names the tool for each stage.</Description>
+    </RecordThing>
+    <RecordThing>
+      <Key>ItemKitTrailerCargo</Key>
+      <Value>Kit (Trailer Cargo)</Value>
+      <Description>Printed on the Electronics Printer (Tier Two). Place it to start a Trailer (Cargo) frame, then build it up: a welder and 10 steel sheets, then a wrench and 10 plastic sheets. The last step turns the frame into the trailer.</Description>
+    </RecordThing>
+    <RecordThing>
+      <Key>StructureTrailerCargo</Key>
+      <Value>Trailer (Cargo) Frame</Value>
+      <Description>A Trailer (Cargo) being built. A welder and 10 steel sheets for the deck and pods, then a wrench and 10 plastic sheets to finish it. It comes down the same way, stage by stage back to its kit, each stage giving its materials back; the tooltip names the tool for each stage.</Description>
+    </RecordThing>
+    <RecordThing>
+      <Key>ItemKitTrailerHab</Key>
+      <Value>Kit (Trailer Habitat)</Value>
+      <Description>Printed on the Electronics Printer (Tier Two). Place it to start a Trailer (Habitat) frame, then build it up: a welder and 20 steel sheets, a wrench and 20 plastic sheets, then a wrench and 8 electronic parts. The last step turns the frame into the habitat trailer.</Description>
+    </RecordThing>
+    <RecordThing>
+      <Key>StructureTrailerHab</Key>
+      <Value>Trailer (Habitat) Frame</Value>
+      <Description>A Trailer (Habitat) being built. A welder and 20 steel sheets for the floor and wall frame, a wrench and 20 plastic sheets for the shell, then a wrench and 8 electronic parts to finish it. It comes down the same way, stage by stage back to its kit, each stage giving its materials back; the tooltip names the tool for each stage.</Description>
     </RecordThing>
   </Things>
 </Language>

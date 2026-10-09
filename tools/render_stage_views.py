@@ -1,11 +1,13 @@
 """Renders for the user's check-ins on the build stages (spec 2026-10-08) and the kits' thumbnails. Headless, saves
 nothing:
 
-    blender -b --factory-startup art/trailer_cargo_blockout.blend --python tools/render_stage_views.py -- <out dir> stages
-    blender -b --factory-startup art/trailer_cargo_blockout.blend --python tools/render_stage_views.py -- <repo mod dir> thumbs
+    blender -b --factory-startup art/rover_cargo.blend --python tools/render_stage_views.py -- <out dir> stages
+    blender -b --factory-startup art/rover_cargo.blend --python tools/render_stage_views.py -- <repo mod dir> thumbs
+    blender -b --factory-startup art/rover_cargo.blend --python tools/render_stage_views.py -- <repo mod dir> vehicles
 
 stages: every state of each vehicle (the last = the finished body, wheels and glass), front 3/4 and side, Workbench.
-thumbs: each finished vehicle front 3/4 on a transparent background, 512 x 512, into <assets>/textures/<kit>.png."""
+thumbs: each finished vehicle front 3/4 on a transparent background, 512 x 512, into <assets>/textures/<kit>.png.
+vehicles: the same picture for the vehicle itself (its Stationpedia and creative-menu thumbnail), <assets>/textures/<prefab>.png."""
 import os
 import sys
 
@@ -20,6 +22,7 @@ import blender_build_stages as bs  # noqa: E402
 import render_upgrade_views as rv  # noqa: E402
 
 ASSETS = {"rover": "RoverAssets", "cargo": "TrailerAssets", "hab": "HabAssets"}
+VEHICLES = {"rover": "RoverCargo", "cargo": "TrailerCargo", "hab": "TrailerHab"}   # prefab names (CargoPrefabs)
 FINISHED = {"rover": ("GEO_RoverBody", "GEO_RoverDoors", "GEO_RoverGlass"), "cargo": ("GEO_TrailerCargo",),
             "hab": ("GEO_TrailerHab", "GEO_HabSlideOut", "GEO_HabLadder", "GEO_HabLeg")}
 
@@ -92,11 +95,11 @@ def main(out, what):
         else:
             objs = _finished(v)
             _show(objs)
-            path = os.path.join(out, ASSETS[v], "textures", bs.KITS[v] + ".png")
+            path = os.path.join(out, ASSETS[v], "textures", (VEHICLES if what == "vehicles" else bs.KITS)[v] + ".png")
             os.makedirs(os.path.dirname(path), exist_ok=True)
             _thumb(path, objs)
     print("RENDERED", out)
 
 
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
-main(argv[0], argv[1] if len(argv) > 1 else "stages")
+main(os.path.abspath(argv[0]), argv[1] if len(argv) > 1 else "stages")   # Blender reads relative paths its own way

@@ -228,6 +228,14 @@ Check(!HabRules.ParkHold(true, true, 0f, 5f, true), "gas releases at once");
 Check(HabRules.ParkHold(true, false, 0.1f, 0f, true) && !HabRules.ParkHold(true, false, 0.3f, 0f, true), "stays held until the rover is shoved past 0.2 m/s");
 Check(HabRules.ParkHold(true, false, 0f, 5f, true), "held on (the hitch force at hold time can read 700+ N: it must not release it)");
 
+// what freezes (0.2.2): a hitched rig is two bodies locked through the hitch on gripping tyres; left free while parked
+// they push on each other (the rover tilts, players slide), so parked = trailer and rover frozen together, the gas frees both
+Check(HabRules.RigHold(hitched: true, deployed: false, parkHeld: true) == (true, true), "parked hitched trailer: trailer and rover frozen");
+Check(HabRules.RigHold(hitched: true, deployed: false, parkHeld: false) == (false, false), "hitched, driving or not yet still: both free");
+Check(HabRules.RigHold(hitched: true, deployed: true, parkHeld: false) == (true, true), "deployed hab: the rover is frozen with it (no leaning on a fixed hab)");
+Check(HabRules.RigHold(hitched: false, deployed: true, parkHeld: false) == (true, false), "deployed unhitched hab: frozen on its legs, no rover");
+Check(HabRules.RigHold(hitched: false, deployed: false, parkHeld: false) == (false, false), "unhitched trailer: free (parking brake)");
+
 // ---------------------------------------------------------------- original rover (RoverRules, spec 2026-09-27)
 Check(RoverRules.Slots.Length == RoverRules.SlotCount && RoverRules.SlotCount == 28, "rover: 28 slots");
 string[] oldKeys = { "Entity", "Entity", "GasFilter", "GasFilter", "ProgrammableChip", "GasCanister", "GasCanister", "GasCanister",
@@ -829,6 +837,45 @@ foreach (var tj in new[] { Path.Combine("TrailerAssets", "trailer.json"), Path.C
           && shocks.All(s => roverMesh(s["body"]) && roverMesh(s["rod"]) && roverMesh(s["spring"]) && s["springAt"] is JArray { Count: 2 }),
           $"{tj}: a coil-over shock (the rover's) at every wheel");
 }
+var trailerClassSrc = ModFile("CargoTrailer.cs");
+var habClassSrc = ModFile("CargoHab.cs");
+Check(trailerClassSrc.Contains("HabRules.RigHold(") && trailerClassSrc.Contains("HabRules.ParkHold(") && trailerClassSrc.Contains("SetRoverFrozen(")
+      && !habClassSrc.Contains("HabRules.ParkHold(") && !habClassSrc.Contains("void SetRoverFrozen("),
+      "rig hold: the parked hold and the rover freeze live in CargoTrailer (both trailers), not only in the hab");
+Check(habClassSrc.Contains("override bool OnLegs"), "rig hold: the hab tells the shared hold when it is deployed");
+// the user's choice (b): the hab's front corner brushed the rover's upgrade tail plate at 70 deg (clear at 65)
+Check(trailerClassSrc.Contains("angularYLimit = new SoftJointLimit { limit = HitchYawLimit }") && trailerClassSrc.Contains("virtual float HitchYawLimit => 70f")
+      && habClassSrc.Contains("override float HitchYawLimit => 65f"),
+      "hitch swing: cargo trailer 70 deg, hab 65 deg (clear of the fitted upgrades)");
+Check(File.ReadAllText(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "tools", "blender_rover_checks.py"))).Contains("(\"hab\", \"GEO_TrailerHab\", g.HAB_ORIGIN_Y, 3.9 + g.HAB_EXT, 65)"),
+      "hitch swing: the model's tow check sweeps the hab to its own 65 deg limit");
+// the user's report (0.2.1): players slid down the hab stairs. The player's body is "Zero Friction" (combine Minimum),
+// so a collider with no material gives 0 friction; the game's stairs carry "Stairs" (static 1, dynamic 0.3, Maximum)
+Check(buildAllSrc.Contains("StairsMaterial()") && buildAllSrc.Contains("c.sharedMaterial = stairs")
+      && buildAllSrc.Contains("staticFriction = 1f") && buildAllSrc.Contains("dynamicFriction = 0.3f") && buildAllSrc.Contains("PhysicMaterialCombine.Maximum"),
+      "hab stairs: the game's Stairs physics material (or the same values), so players stand on them");
+// ...and with grip the player could not climb them at all: the game's slope walking and step-up both skip colliders on
+// a rigidbody (any vehicle), so the deployed (frozen) hab's stairs are a static copy in the world, like the game's own
+Check(habClassSrc.Contains("void SyncStairs(") && habClassSrc.Contains("new GameObject(\"RoverCargoHabStairs\")")
+      && !habClassSrc[habClassSrc.IndexOf("void SyncStairs(")..].Split("\n    }")[0].Contains("SetParent(transform")
+      && habClassSrc.Contains("Destroy(_stairs)") && habClassSrc.Contains("SyncStairs(false)"),
+      "hab stairs: deployed, a static world copy of the stair collider (no rigidbody), removed on stow and on destroy");
+// Stationpedia (the user's 0.2.1 report): the rover and both trailers showed the game's 2020 rover picture and the rover
+// the game's 2020 text. Every vehicle has its own rendered picture, and every thing we register its own English page
+var modDir = Path.GetDirectoryName(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "Plugin.cs")));   // both layouts
+foreach (var (assets, prefab) in new[] { ("RoverAssets", "RoverCargo"), ("TrailerAssets", "TrailerCargo"), ("HabAssets", "TrailerHab") })
+    Check(File.Exists(Path.Combine(modDir, assets, "textures", prefab + ".png")), $"stationpedia: {assets}/textures/{prefab}.png (our rendered picture)");
+Check(!buildAllSrc.Contains("Thumbnail(RoverName)") && !roverBuilderSrc.Contains("Thumbnail(RoverName)")
+      && !buildAllSrc.Contains("mk1.Thumbnail") && buildAllSrc.Contains("VehicleThumbnail("),
+      "stationpedia: vehicle pictures are ours only (never the game's 2020 RoverCargo picture or the Mk I's)");
+var pediaXml = System.Xml.Linq.XDocument.Load(Path.Combine(modDir, "GameData", "Language", "english.xml"));
+var pages = pediaXml.Descendants("RecordThing").ToDictionary(r => (string)r.Element("Key"), r => (Name: (string)r.Element("Value"), Text: (string)r.Element("Description")));
+foreach (var key in new[] { "RoverCargo", "TrailerCargo", "TrailerHab", "ItemKitRoverFrame", "StructureRover", "ItemKitTrailerCargo", "StructureTrailerCargo", "ItemKitTrailerHab", "StructureTrailerHab" })
+    Check(pages.TryGetValue(key, out var pg) && !string.IsNullOrWhiteSpace(pg.Name) && (pg.Text?.Length ?? 0) > 80, $"stationpedia: {key} has its own name and page");
+Check(pages.TryGetValue("RoverCargo", out var rp) && rp.Text.Contains("Duct tape") && rp.Text.Contains("no storm damage") && rp.Text.Contains("drill"),
+      "stationpedia: the rover's page says how to repair, armour and take it apart");
+Check(pages.TryGetValue("TrailerHab", out var habPage) && habPage.Text.Contains("deploy panel") && habPage.Text.Contains("AIR SUPPLY") && habPage.Text.Contains("WASTE"),
+      "stationpedia: the hab's page says how to deploy it and where its air comes from");
 var trailerBuilderSrc = buildAllSrc[buildAllSrc.IndexOf("public CargoTrailer BuildTrailer(")..];
 trailerBuilderSrc = trailerBuilderSrc[..trailerBuilderSrc.IndexOf("\n    private ")];
 Check(!trailerBuilderSrc.Contains("_layout") && trailerBuilderSrc.Contains("RunningGear(") && trailerBuilderSrc.Contains("BuildShocks(")
@@ -986,7 +1033,7 @@ Check(trailerBody.Contains("var bodyNode = Child(go.transform, \"Body\");") && t
 // ---------------------------------------------------------------- Workshop prep: About and README (sub-project 6)
 var about = System.Xml.Linq.XDocument.Load(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "About", "About.xml"))).Root;
 var pluginVersion = System.Text.RegularExpressions.Regex.Match(ModFile("Plugin.cs"), "Version = \"([0-9.]+)\"").Groups[1].Value;
-Check((string)about.Element("Version") == "0.2.1" && pluginVersion == "0.2.1", "about: version 0.2.1 in About.xml and the plugin");
+Check((string)about.Element("Version") == "0.2.2" && pluginVersion == "0.2.2", "about: version 0.2.2 in About.xml and the plugin");
 Check((string)about.Element("Author") == "BillBrasky" && (string)about.Element("Name") == "Rover (Cargo) Returns"
       && (string)about.Element("ModID") == "stationeers.rovercargo", "about: name, author and mod id");
 Check(!((string)about.Element("Description")).Contains("extract", StringComparison.OrdinalIgnoreCase)

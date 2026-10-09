@@ -1,7 +1,7 @@
 """Renders for the user's check-ins (spec 2026-10-07): the original rover with each upgrade group, and the trailer and
 hab with theirs, Workbench, each part in its palette role's colour. Headless, nothing saved:
 
-    blender -b --factory-startup art/trailer_cargo_blockout.blend --python tools/render_upgrade_views.py -- <out dir> [rover|trailers]
+    blender -b --factory-startup art/rover_cargo.blend --python tools/render_upgrade_views.py -- <out dir> [rover|trailers]
 """
 import os
 import sys

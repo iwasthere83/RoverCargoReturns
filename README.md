@@ -65,5 +65,7 @@ Stationeers; it borrows the game's own Rover Mk I, its kit and materials at runt
   and checks it.
 - **The models:** generated from code — `blender -b --factory-startup --python-exit-code 1 --python tools/export_all.py -- .`
   (Blender 5.1) rewrites `RoverAssets/`, `TrailerAssets/` and `HabAssets/`. The model checks that measure against game
-  items (e.g. a crate in a bay) need a local reference scene with the game's own meshes, which is not part of this repo.
-- **The tests:** `cd tests/HabTests && dotnet run -c Release`; `python tools/test_package_tools.py`.
+  items (e.g. a crate in a bay) need a local reference scene with the game's own meshes, which is not part of this repo;
+  `tools/make_blend.py -- <reference .blend> <new .blend>` builds a working scene from the code plus those references.
+- **The tests:** `cd tests/HabTests && dotnet run -c Release`; `python tools/test_package_tools.py`;
+  `python tools/test_make_blend.py`.
