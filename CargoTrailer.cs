@@ -328,16 +328,21 @@ public class CargoTrailer : CargoRover
         _tow = null;
     }
 
+    /// <summary>Which colliders the hitch stops from colliding: the vehicles' own solid parts and their cargo, never a
+    /// person. A player seated in the rover (or asleep in a hab bunk) is its child: swept in, the hab let them fall
+    /// through every inch of it until unhitched (the user's 0.2.2 report, loading a save in the rover's seat).</summary>
+    private static bool HitchIgnores(Collider c) => c && !c.isTrigger && !c.GetComponentInParent<Entity>();
+
     private void IgnoreCollisions(CargoRover rover, bool ignore)
     {
         if (ignore)
         {
             foreach (var a in GetComponentsInChildren<Collider>(true))
             {
-                if (a.isTrigger) continue;
+                if (!HitchIgnores(a)) continue;
                 foreach (var b in rover.GetComponentsInChildren<Collider>(true))
                 {
-                    if (b.isTrigger) continue;
+                    if (!HitchIgnores(b)) continue;
                     Physics.IgnoreCollision(a, b, true);
                     _ignored.Add((a, b));
                 }

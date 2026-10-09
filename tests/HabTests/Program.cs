@@ -843,6 +843,13 @@ Check(trailerClassSrc.Contains("HabRules.RigHold(") && trailerClassSrc.Contains(
       && !habClassSrc.Contains("HabRules.ParkHold(") && !habClassSrc.Contains("void SetRoverFrozen("),
       "rig hold: the parked hold and the rover freeze live in CargoTrailer (both trailers), not only in the hab");
 Check(habClassSrc.Contains("override bool OnLegs"), "rig hold: the hab tells the shared hold when it is deployed");
+// the user's 0.2.2 report: fell through every inch of the hitched hab. Hitching ignores collisions between everything in
+// the trailer and everything in the rover, and a player seated in the rover (or asleep in a hab bunk) is a child of it
+var ignoreSrc = trailerClassSrc[trailerClassSrc.IndexOf("private void IgnoreCollisions(")..];
+ignoreSrc = ignoreSrc[..ignoreSrc.IndexOf("\n    }")];
+Check(trailerClassSrc.Contains("static bool HitchIgnores(Collider c) => c && !c.isTrigger && !c.GetComponentInParent<Entity>()")
+      && ignoreSrc.Contains("if (!HitchIgnores(a)) continue;") && ignoreSrc.Contains("if (!HitchIgnores(b)) continue;"),
+      "hitch: ignores collisions only between the vehicles' own parts and cargo, never a person (seated or asleep)");
 // the user's choice (b): the hab's front corner brushed the rover's upgrade tail plate at 70 deg (clear at 65)
 Check(trailerClassSrc.Contains("angularYLimit = new SoftJointLimit { limit = HitchYawLimit }") && trailerClassSrc.Contains("virtual float HitchYawLimit => 70f")
       && habClassSrc.Contains("override float HitchYawLimit => 65f"),
@@ -1033,7 +1040,7 @@ Check(trailerBody.Contains("var bodyNode = Child(go.transform, \"Body\");") && t
 // ---------------------------------------------------------------- Workshop prep: About and README (sub-project 6)
 var about = System.Xml.Linq.XDocument.Load(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "About", "About.xml"))).Root;
 var pluginVersion = System.Text.RegularExpressions.Regex.Match(ModFile("Plugin.cs"), "Version = \"([0-9.]+)\"").Groups[1].Value;
-Check((string)about.Element("Version") == "0.2.2" && pluginVersion == "0.2.2", "about: version 0.2.2 in About.xml and the plugin");
+Check((string)about.Element("Version") == "0.2.3" && pluginVersion == "0.2.3", "about: version 0.2.3 in About.xml and the plugin");
 Check((string)about.Element("Author") == "BillBrasky" && (string)about.Element("Name") == "Rover (Cargo) Returns"
       && (string)about.Element("ModID") == "stationeers.rovercargo", "about: name, author and mod id");
 Check(!((string)about.Element("Description")).Contains("extract", StringComparison.OrdinalIgnoreCase)
