@@ -35,7 +35,7 @@ public sealed partial class CargoPrefabs
 
     public sealed class Settings
     {
-        public float MotorPower = 60f, BrakePower = 20f, MaxSpeed = 6.5f, GlassAlpha = 0.18f, CabinInsulation = 0.05f, HabInsulation = 0.005f;
+        public float MotorPower = 60f, BrakePower = 20f, MaxSpeed = 6.5f, GlassAlpha = 0.18f, RoverInsulation = 0.005f, HabInsulation = 0.005f;
         public bool RearWheelSteer = true;
         public float TrailerComHeight = 0.58f, HabComHeight = 0.75f, TrailerSideGrip = 1.4f, StormDamage = 0.25f;
     }

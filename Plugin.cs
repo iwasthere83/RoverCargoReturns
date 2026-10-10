@@ -13,7 +13,7 @@ namespace Stationeers.RoverCargo;
 /// <summary>StationeersLaunchPad entry point (same pattern as Stationeers.WirelessUpgrade).</summary>
 public class Plugin : MonoBehaviour
 {
-    public const string Version = "0.2.4";
+    public const string Version = "0.2.5";
     private static Harmony _harmony;
     private static CargoLayout _trailer, _hab, _original;
     private static CargoPrefabs.Settings _settings;
@@ -35,7 +35,7 @@ public class Plugin : MonoBehaviour
                 TrailerComHeight = Mathf.Clamp(cfg.Bind("Stability", "TrailerCenterOfMassHeight", 0.58f, "Trailer centre of mass height above the ground in metres (the wheel centres are at 0.645). Lower = harder to roll over. Cargo in slots does not change it. Restart required.").Value, 0f, 1.5f),
                 HabComHeight = Mathf.Clamp(cfg.Bind("Stability", "HabCenterOfMassHeight", 0.75f, "Hab trailer centre of mass height above the ground in metres (wheel centres 0.645). Lower = harder to tip. Restart required.").Value, 0f, 2f),
                 TrailerSideGrip = Mathf.Clamp(cfg.Bind("Driving", "TrailerSideGrip", 1.4f, "Trailer tyre sideways grip multiplier (1 = same as the rover). Higher stops the trailer whipping around behind the rover. Restart required.").Value, 0.5f, 3f),
-                CabinInsulation = Mathf.Clamp(cfg.Bind("Cabin", "Insulation", 0.05f, "Cabin heat exchange with the outside, as a fraction of normal (also shields the tanks in the rover's slots). 1 = uninsulated, 0.05 = about a suit. Restart required.").Value, 0f, 1f),
+                RoverInsulation = Mathf.Clamp(cfg.Bind("Cabin", "RoverInsulation", 0.005f, "Rover cab heat exchange with the outside, as a fraction of normal (also shields the tanks in the rover's slots): insulated like a vehicle cab. 0.05 (the old Insulation, about a suit) cost about 1.6 kW of heating on Europa. Restart required.").Value, 0f, 1f),
                 HabInsulation = Mathf.Clamp(cfg.Bind("Cabin", "HabInsulation", 0.005f, "Habitat trailer heat exchange with the outside, as a fraction of normal: insulated like a base room. 0.005 heats the hab on Europa for about 165 W; 0.05 (the cab's) about 1.6 kW. Restart required.").Value, 0f, 1f),
                 StormDamage = Mathf.Clamp(cfg.Bind("Storm", "StormDamage", 0.25f, "Storm damage to the Cargo Rover and its trailers without storm armour, as a fraction of vanilla: 1 = vanilla (a Venus storm can destroy the rover), 0.25 = four times tougher, 0 = immune. Storm armour stops storm damage. Restart required.").Value, 0f, 1f),
                 GlassAlpha = Mathf.Clamp01(cfg.Bind("Cabin", "GlassAlpha", 0.18f, "Cabin glass opacity; lower is clearer.").Value),

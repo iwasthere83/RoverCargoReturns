@@ -50,7 +50,7 @@ In any rover: hold the third-person key and scroll while seated; the mouse orbit
 
 ## Settings (`RoverCargo.cfg`, in the mod's folder, created on first start)
 Driving: `MotorPower`, `BrakePower`, `MaxSpeed`, `RearWheelSteer`, `TrailerSideGrip`, `TractionBonus`,
-`GripAssistMkI`. Stability: `TrailerCenterOfMassHeight`, `HabCenterOfMassHeight`. Cabin: `Insulation`, `HabInsulation`, `GlassAlpha`.
+`GripAssistMkI`. Stability: `TrailerCenterOfMassHeight`, `HabCenterOfMassHeight`. Cabin: `RoverInsulation`, `HabInsulation`, `GlassAlpha`.
 Storm: `StormDamage`. Camera: `ChaseCamera`, `Distance`, `Height`, `LimitSeatedHead`. Fixes: `LiftFix`. Each has a
 description in the file. The `Log*` switches write diagnostics to the game's `Player.log` (lines start with
 `[RoverCargo]`) — useful for bug reports.

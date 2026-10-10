@@ -250,7 +250,13 @@ Check(ledger.Ticks == 0 && ledger.TotalPerTick() == 0f, "power ledger: reset sta
     var screenSrc = File.ReadAllText(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "HabStatusScreen.cs")));
     Check(plug.Contains("cfg.Bind(\"Cabin\", \"HabInsulation\", 0.005f") && prefabs.Contains("HabInsulation = 0.005f")
           && prefabs.Contains("hab.CabinInsulation = _settings.HabInsulation;"),
-          "hab insulation: its own setting, 0.005 by default (a base room), the rover cab keeps Insulation");
+          "hab insulation: its own setting, 0.005 by default (a base room)");
+    // MadelynPlays (0.2.4): the rover's cab heater drained on Europa too (the cab's 0.05). A NEW key, because existing
+    // cfgs keep their saved Insulation = 0.05 and a changed default would never reach them
+    var roverBuild = File.ReadAllText(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "CargoPrefabs.Rover.cs")));
+    Check(plug.Contains("cfg.Bind(\"Cabin\", \"RoverInsulation\", 0.005f") && !plug.Contains("\"Insulation\",")
+          && prefabs.Contains("RoverInsulation = 0.005f") && roverBuild.Contains("cr.CabinInsulation = _settings.RoverInsulation;"),
+          "rover insulation: a new RoverInsulation key, 0.005 by default; the old Insulation key is no longer read");
     Check(habSrc.Contains("public double? MeasuredDrawW") && habSrc.IndexOf("MeasuredDrawW = Power.TotalPerTick()") < habSrc.IndexOf("if (LogClimate && ++_climateTick")
           && screenSrc.Contains("_hab.MeasuredDrawW ??"),
           "hab screen: the draw is the power ledger's measurement (any log setting), the estimate only where none exists (a client)");
@@ -1068,7 +1074,7 @@ Check(trailerBody.Contains("var bodyNode = Child(go.transform, \"Body\");") && t
 // ---------------------------------------------------------------- Workshop prep: About and README (sub-project 6)
 var about = System.Xml.Linq.XDocument.Load(RepoFile(Path.Combine("mods", "Stationeers.RoverCargo", "About", "About.xml"))).Root;
 var pluginVersion = System.Text.RegularExpressions.Regex.Match(ModFile("Plugin.cs"), "Version = \"([0-9.]+)\"").Groups[1].Value;
-Check((string)about.Element("Version") == "0.2.4" && pluginVersion == "0.2.4", "about: version 0.2.4 in About.xml and the plugin");
+Check((string)about.Element("Version") == "0.2.5" && pluginVersion == "0.2.5", "about: version 0.2.5 in About.xml and the plugin");
 Check((string)about.Element("Author") == "BillBrasky" && (string)about.Element("Name") == "Rover (Cargo) Returns"
       && (string)about.Element("ModID") == "stationeers.rovercargo", "about: name, author and mod id");
 Check(!((string)about.Element("Description")).Contains("extract", StringComparison.OrdinalIgnoreCase)

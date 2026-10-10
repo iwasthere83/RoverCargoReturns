@@ -301,7 +301,7 @@ public sealed partial class CargoPrefabs
         var F = (JObject)J["fields"];
         var com = J["autoCom"];
         cr.CenterOfMassOffset = new Vector3(0f, RoverComHeight - (float)com[1], 0f);
-        cr.CabinInsulation = _settings.CabinInsulation;
+        cr.CabinInsulation = _settings.RoverInsulation;
         cr.SurfaceArea = (float)F["SurfaceArea"];
         cr.ThingHealth = (float)F["ThingHealth"];
         cr.Bounds = bodyMesh.bounds;
